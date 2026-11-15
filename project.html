@@ -1,0 +1,3047 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VERIDEX – Rwanda's Digital Legal Information & Justice Platform</title>
+
+  <!-- Google Fonts: Playfair Display / Newsreader (Editorial Serif), Plus Jakarta Sans (Clean UI), Caveat (Margin Script), JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: {
+              50: '#FDFBF8',
+              100: '#FAF7F2',
+              200: '#F3EDE4',
+              300: '#E5DDD0',
+              400: '#D3C7B5',
+            },
+            forest: {
+              950: '#131D18',
+              900: '#1D2B24',
+              800: '#273A31',
+              700: '#354F42',
+              100: '#E8EFEA',
+              50: '#F3F7F4',
+            },
+            copper: {
+              700: '#8F4E22',
+              600: '#B86B35',
+              500: '#C87D4B',
+              400: '#D99668',
+              100: '#F8ECE3',
+              50: '#FCF6F1',
+            },
+            gold: {
+              600: '#B88914',
+              500: '#EAB308',
+              400: '#FACC15',
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            serif: ['Newsreader', 'Georgia', 'serif'],
+            script: ['Caveat', 'cursive'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #FAF7F2;
+      color: #1D2B24;
+    }
+
+    .font-editorial {
+      font-family: 'Newsreader', Georgia, serif;
+    }
+
+    .font-script {
+      font-family: 'Caveat', cursive;
+    }
+
+    .font-code {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Split-Screen Left Architectural Visual Backdrop */
+    .auth-hero-bg {
+      background-color: #161E1A;
+      background-image:
+        linear-gradient(165deg, rgba(16, 24, 20, 0.72) 0%, rgba(22, 32, 27, 0.55) 45%, rgba(12, 18, 15, 0.88) 100%),
+        radial-gradient(circle at 75% 28%, rgba(234, 179, 8, 0.18), transparent 48%),
+        radial-gradient(circle at 20% 80%, rgba(184, 107, 53, 0.25), transparent 52%);
+    }
+
+    /* Editorial Hero Banner Backdrop */
+    .editorial-hero-bg {
+      background-color: #1D2B24;
+      background-image:
+        radial-gradient(circle at 82% 50%, rgba(184, 107, 53, 0.24) 0%, rgba(29, 43, 36, 0.05) 55%),
+        linear-gradient(110deg, #16221C 0%, #1D2B24 58%, #283930 100%);
+    }
+
+    /* Clean Underline Input Aesthetic for Gateway */
+    .underline-input {
+      border: none;
+      border-bottom: 1.5px solid #D1D5DB;
+      border-radius: 0;
+      background: transparent;
+      transition: border-color 0.2s ease;
+    }
+    .underline-input:focus {
+      outline: none;
+      border-bottom-color: #1D2B24;
+    }
+
+    /* Live Pulse Animation */
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(1.22); }
+    }
+    .live-dot {
+      animation: livePulse 1.8s infinite ease-in-out;
+    }
+
+    /* Audio Equalizer */
+    @keyframes wave {
+      0%, 100% { height: 5px; }
+      50% { height: 19px; }
+    }
+    .eq-bar:nth-child(1) { animation: wave 0.9s infinite ease-in-out 0.1s; }
+    .eq-bar:nth-child(2) { animation: wave 0.7s infinite ease-in-out 0.3s; }
+    .eq-bar:nth-child(3) { animation: wave 1.1s infinite ease-in-out 0.2s; }
+    .eq-bar:nth-child(4) { animation: wave 0.8s infinite ease-in-out 0.4s; }
+
+    /* Smooth Page Transition */
+    .page-reveal {
+      animation: smoothFade 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes smoothFade {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FAF7F2;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #C8BFA9;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-copper-600 selection:text-white">
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+  <!-- Modal Backdrop -->
+  <div id="modal-backdrop" class="hidden fixed inset-0 bg-forest-950/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
+    <div id="modal-content" class="bg-cream-100 rounded-2xl max-w-2xl w-full shadow-2xl border border-cream-300 overflow-hidden my-8"></div>
+  </div>
+
+  <!-- Root Application Container (Renders either Split-Screen Auth Gateway OR Interior Editorial Platform) -->
+  <div id="app-shell" class="flex-grow flex flex-col"></div>
+
+  <!-- ===================================================================== -->
+  <!-- APPLICATION DATA, STATE & INTERACTIVE LOGIC                           -->
+  <!-- ===================================================================== -->
+  <script>
+    // -------------------------------------------------------------------------
+    // 1. RWANDAN LEGAL ECOSYSTEM SEED DATA
+    // -------------------------------------------------------------------------
+    const SEED_DATA = {
+      lawyers: [
+        {
+          id: 'law-1',
+          name: 'Me. Jean-Claude Habimana',
+          title: 'Senior Advocate & Managing Partner',
+          specialization: 'Commercial & Corporate Law',
+          qualifications: 'LL.M. International Business Law (ULK), LL.B. (University of Rwanda)',
+          experience: 14,
+          district: 'Kigali – Gasabo',
+          officeAddress: 'KG 7 Ave, Kigali Heights, 4th Floor, Suite 402, Kimihurura',
+          phone: '+250 788 310 492',
+          email: 'jc.habimana@veridex.rw',
+          fee: '50,000 RWF / hr',
+          feeShort: '50,000 RWF',
+          verified: true,
+          rbaNumber: 'RBA/ADV/0412',
+          availability: ['Mon 09:00', 'Mon 14:00', 'Wed 10:30', 'Fri 15:00'],
+          languages: ['Kinyarwanda', 'English', 'French'],
+          bio: 'Advises entrepreneurs, cooperatives, and investors on RDB corporate structuring, commercial arbitration at KIAC, and cross-border contract enforcement.',
+          initials: 'JH',
+          cardTone: 'from-forest-900 to-forest-800'
+        },
+        {
+          id: 'law-2',
+          name: 'Me. Claudine Uwimana',
+          title: 'Advocate of the Supreme Court',
+          specialization: 'Family & Succession Law',
+          qualifications: 'LL.B. (Hons) University of Rwanda, Diploma in Legal Practice (ILPD Nyanza)',
+          experience: 11,
+          district: 'Kigali – Nyarugenge',
+          officeAddress: 'KN 3 Rd, Centenary House, 2nd Floor, Room 214, Kigali CBD',
+          phone: '+250 788 542 189',
+          email: 'c.uwimana@veridex.rw',
+          fee: '30,000 RWF / hr',
+          feeShort: '30,000 RWF',
+          verified: true,
+          rbaNumber: 'RBA/ADV/0689',
+          availability: ['Tue 09:30', 'Tue 14:00', 'Thu 11:00', 'Fri 09:00'],
+          languages: ['Kinyarwanda', 'French', 'English'],
+          bio: 'Dedicated practitioner in matrimonial property regimes, inheritance & succession disputes under Law N° 27/2016, child custody, and family mediation.',
+          initials: 'CU',
+          cardTone: 'from-copper-700 to-copper-600'
+        },
+        {
+          id: 'law-3',
+          name: 'Me. Patrick Nshimiyimana',
+          title: 'Criminal Defense & Human Rights Counsel',
+          specialization: 'Criminal Law',
+          qualifications: 'LL.M. Criminal Justice & Human Rights, Diploma in Legal Practice (ILPD)',
+          experience: 9,
+          district: 'Kigali – Kicukiro',
+          officeAddress: 'KK 15 Rd, Sonatubes Plaza, 3rd Floor, Kicukiro',
+          phone: '+250 783 901 224',
+          email: 'p.nshimiyimana@veridex.rw',
+          fee: '25,000 RWF / hr (Pro Bono eligible)',
+          feeShort: '25,000 RWF',
+          verified: true,
+          rbaNumber: 'RBA/ADV/0834',
+          availability: ['Mon 10:00', 'Wed 14:30', 'Thu 09:00', 'Sat 10:00'],
+          languages: ['Kinyarwanda', 'English', 'Swahili'],
+          bio: 'Experienced trial litigator defending citizens across Primary, Intermediate, and High Courts. Focuses on bail hearings, due process, and appellate defense.',
+          initials: 'PN',
+          cardTone: 'from-stone-800 to-stone-700'
+        },
+        {
+          id: 'law-4',
+          name: 'Me. Aline Mukamana',
+          title: 'Real Estate & Land Governance Specialist',
+          specialization: 'Land & Property Law',
+          qualifications: 'LL.B. University of Rwanda, Certified Land Dispute Mediator',
+          experience: 8,
+          district: 'Musanze',
+          officeAddress: 'RN4 Main Avenue, Virunga Business Center, 1st Floor, Musanze',
+          phone: '+250 788 774 610',
+          email: 'a.mukamana@veridex.rw',
+          fee: '25,000 RWF / hr',
+          feeShort: '25,000 RWF',
+          verified: true,
+          rbaNumber: 'RBA/ADV/0915',
+          availability: ['Mon 11:00', 'Tue 15:00', 'Thu 10:00', 'Fri 14:00'],
+          languages: ['Kinyarwanda', 'French', 'English'],
+          bio: 'Advises landowners, cooperatives, and developers on emphyteutic leases, NLA title transfers, expropriation valuation, and boundary disputes.',
+          initials: 'AM',
+          cardTone: 'from-forest-800 to-copper-700'
+        },
+        {
+          id: 'law-5',
+          name: 'Me. Eric Mugisha',
+          title: 'Employment & Labor Relations Advocate',
+          specialization: 'Labor & Employment Law',
+          qualifications: 'LL.B. (ULK), Post-Graduate Diploma in Legal Practice (ILPD)',
+          experience: 6,
+          district: 'Huye',
+          officeAddress: 'NR1 Road, Butare Commercial Complex, Suite 12, Huye',
+          phone: '+250 782 441 809',
+          email: 'e.mugisha@veridex.rw',
+          fee: '20,000 RWF / hr',
+          feeShort: '20,000 RWF',
+          verified: true,
+          rbaNumber: 'RBA/ADV/1102',
+          availability: ['Tue 10:00', 'Wed 09:00', 'Thu 14:00', 'Fri 11:00'],
+          languages: ['Kinyarwanda', 'English', 'French'],
+          bio: 'Represents employees and institutions in wrongful dismissal claims, RSSB pension compliance, workplace safety, and labor inspectorate mediations.',
+          initials: 'EM',
+          cardTone: 'from-forest-950 to-forest-800'
+        },
+        {
+          id: 'law-6',
+          name: 'Me. Diane Ingabire',
+          title: 'Constitutional & Administrative Law Counsel',
+          specialization: 'Constitutional & Public Law',
+          qualifications: 'LL.M. Constitutional Governance, LL.B. (University of Rwanda)',
+          experience: 7,
+          district: 'Rubavu',
+          officeAddress: 'Avenue de l’Umuganda, Lake Kivu Chambers, Rubavu',
+          phone: '+250 789 112 330',
+          email: 'd.ingabire@veridex.rw',
+          fee: '35,000 RWF / hr',
+          feeShort: '35,000 RWF',
+          verified: false,
+          rbaNumber: 'RBA/ADV/1248 (Pending)',
+          availability: ['Mon 14:00', 'Wed 11:00', 'Fri 10:00'],
+          languages: ['Kinyarwanda', 'French', 'English'],
+          bio: 'Focuses on judicial review of administrative decisions, public procurement appeals, and fundamental constitutional litigation.',
+          initials: 'DI',
+          cardTone: 'from-copper-700 to-stone-800'
+        }
+      ],
+
+      streams: [
+        {
+          id: 'str-1',
+          status: 'LIVE',
+          court: 'Supreme Court of Rwanda',
+          location: 'Kimihurura, Kigali (Courtroom 1)',
+          caseNumber: 'RS/INCONST/SPEC 0003/26/SC',
+          caseTitle: 'Public Interest Petition on Digital Evidence Admissibility in Civil Proceedings',
+          bench: 'Hon. Chief Justice & Full Constitutional Bench (5 Justices)',
+          dateTime: 'Today • Started 09:30 AM CAT',
+          viewers: 1428,
+          authorizedBy: 'Office of the Chief Registrar – Public Broadcast Directive N° 14/2026',
+          summary: 'Open constitutional hearing examining electronic signatures and certified digital records under Rwandan procedural law. Protected witness identities are excluded.',
+          transcript: [
+            { time: '09:32', speaker: 'Court Registrar', text: 'All rise. The Supreme Court of the Republic of Rwanda is now in session for Case RS/INCONST/SPEC 0003/26/SC.' },
+            { time: '09:38', speaker: 'Presiding Justice', text: 'Counsel for the Petitioner, you may proceed with your oral submissions regarding Article 42 of the Evidence Law.' },
+            { time: '09:45', speaker: 'Petitioner Counsel', text: 'My Lords, digital timestamps certified by accredited public institutions satisfy the statutory threshold of authenticity.' },
+            { time: '09:54', speaker: 'State Attorney', text: 'We concur on institutional certification, provided integrity audit trails meet Law N° 058/2021 safeguards.' }
+          ]
+        },
+        {
+          id: 'str-2',
+          status: 'LIVE',
+          court: 'Commercial High Court',
+          location: 'Nyarugenge, Kigali (Chamber II)',
+          caseNumber: 'RCOMA 0118/26/HCC',
+          caseTitle: 'Kigali Agro-Export Ltd v. Horizon Logistics Rwanda PLC',
+          bench: 'Hon. Judge M. Karekezi (Presiding)',
+          dateTime: 'Today • Started 11:00 AM CAT',
+          viewers: 612,
+          authorizedBy: 'Commercial High Court Registry – Open Commercial Docket',
+          summary: 'Appellate commercial hearing concerning cross-border freight contract force majeure clauses.',
+          transcript: [
+            { time: '11:02', speaker: 'Presiding Judge', text: 'This commercial appeal is open to the public. Both corporate parties have consented to standard judicial broadcast.' },
+            { time: '11:10', speaker: 'Appellant Counsel', text: 'Your Honor, the notice of delay was served within 48 hours as stipulated under Clause 14.2.' }
+          ]
+        },
+        {
+          id: 'str-3',
+          status: 'UPCOMING',
+          court: 'High Court – Chamber of International & Cross-Border Crimes',
+          location: 'Nyanza, Southern Province',
+          caseNumber: 'RP/GEN 0009/26/HC-ICC',
+          caseTitle: 'Public Prosecution v. Defendant (Public Judgment Pronouncement)',
+          bench: 'Three-Judge Panel',
+          dateTime: 'Tomorrow • 10:00 AM CAT',
+          viewers: 0,
+          authorizedBy: 'Judiciary Public Communications Unit',
+          summary: 'Public pronouncement of judgment. Victim identities remain strictly anonymized pursuant to witness protection rules.',
+          transcript: []
+        },
+        {
+          id: 'str-4',
+          status: 'UPCOMING',
+          court: 'Court of Appeal',
+          location: 'Kimihurura, Kigali',
+          caseNumber: 'RPA 0074/26/CA',
+          caseTitle: 'Land Expropriation Public Interest Valuation Appeal',
+          bench: 'Hon. Justice A. Gasana & Panel',
+          dateTime: 'Nov 18, 2026 • 09:00 AM CAT',
+          viewers: 0,
+          authorizedBy: 'Court of Appeal Registry',
+          summary: 'Appellate review of fair market compensation standards under the Expropriation in the Public Interest Law.',
+          transcript: []
+        },
+        {
+          id: 'str-5',
+          status: 'RECORDED',
+          court: 'Supreme Court of Rwanda',
+          location: 'Kigali',
+          caseNumber: 'RS/SPEC 0001/26/SC',
+          caseTitle: 'Judgment Pronouncement: Employment Severance & Social Security Contributions',
+          bench: 'Supreme Court Bench',
+          dateTime: 'Recorded Nov 04, 2026 • Duration 1h 18m',
+          viewers: 4890,
+          authorizedBy: 'Official Judiciary Archive – Public Precedent',
+          summary: 'Landmark ruling clarifying employer obligations for statutory pension remittance upon contract termination.',
+          transcript: [
+            { time: '00:15', speaker: 'Presiding Justice', text: 'The Court holds that statutory pension contributions are non-derogable rights of the worker.' }
+          ]
+        }
+      ],
+
+      gazettes: [
+        {
+          id: 'gaz-1',
+          number: 'Official Gazette N° Special of 27/09/2018',
+          lawCode: 'Law N° 68/2018',
+          fullCode: 'Law N° 68/2018 of 30/08/2018',
+          title: 'Law Determining Offences and Penalties in General (Penal Code)',
+          category: 'Criminal Law',
+          year: '2018',
+          status: 'In Force (Amended 2023)',
+          citation: 'Republic of Rwanda, Law N° 68/2018 of 30/08/2018 Determining Offences and Penalties in General, Official Gazette N° Special of 27/09/2018.',
+          summary: 'Establishes the fundamental principles of criminal liability, classification of offences (felonies, misdemeanors, petty offences), penalties, and public order safeguards.',
+          keyArticles: [
+            'Article 3: Principle of legality of offences and penalties (Nullum crimen sine lege).',
+            'Article 18: Presumption of innocence until final judicial conviction.',
+            'Article 174: Forgery, counterfeiting, and alteration of official documents.',
+            'Article 252: Breach of trust and misappropriation of entrusted property.'
+          ],
+          fullText: `REPUBLIC OF RWANDA\nOFFICIAL GAZETTE N° SPECIAL OF 27/09/2018\nLAW N° 68/2018 OF 30/08/2018 DETERMINING OFFENCES AND PENALTIES IN GENERAL\n\nArticle 1: Purpose of this Law\nThis Law determines offences and penalties in general in the Republic of Rwanda.\n\nArticle 3: Legality of offences and penalties\nNo person shall be punished for an act or omission that did not constitute an offence under national or international law at the time when it was committed.\n\nArticle 18: Individual criminal responsibility\nCriminal responsibility is personal. No one shall be held criminally liable for an act committed by another person.`
+        },
+        {
+          id: 'gaz-2',
+          number: 'Official Gazette N° Special of 15/10/2021',
+          lawCode: 'Law N° 058/2021',
+          fullCode: 'Law N° 058/2021 of 13/10/2021',
+          title: 'Law Relating to the Protection of Personal Data and Privacy',
+          category: 'Digital & Privacy',
+          year: '2021',
+          status: 'In Force',
+          citation: 'Republic of Rwanda, Law N° 058/2021 of 13/10/2021 Relating to the Protection of Personal Data and Privacy, Official Gazette N° Special of 15/10/2021.',
+          summary: 'Guarantees the right to privacy and personal data protection in Rwanda. Regulates data controllers, lawful consent, sensitive judicial data, and cross-border transfers.',
+          keyArticles: [
+            'Article 4: Principles of personal data processing (lawfulness, fairness, transparency, data minimization).',
+            'Article 12: Right of the data subject to access, rectify, and erase personal data.',
+            'Article 21: Strict protection of sensitive personal data including judicial and criminal records.',
+            'Article 42: Duty to notify the supervisory authority (NCSA) of personal data breaches within 48 hours.'
+          ],
+          fullText: `REPUBLIC OF RWANDA\nOFFICIAL GAZETTE N° SPECIAL OF 15/10/2021\nLAW N° 058/2021 OF 13/10/2021 RELATING TO THE PROTECTION OF PERSONAL DATA AND PRIVACY\n\nArticle 1: Purpose\nThis Law establishes the legal framework for the protection of personal data and privacy of individuals in Rwanda.\n\nArticle 21: Processing of sensitive personal data\nProcessing of sensitive data—including health records, biometrics, and criminal convictions—is prohibited unless explicitly authorized by law or judicial authority with strict confidentiality safeguards.`
+        },
+        {
+          id: 'gaz-3',
+          number: 'Official Gazette N° Special of 10/06/2021',
+          lawCode: 'Law N° 27/2021',
+          fullCode: 'Law N° 27/2021 of 10/06/2021',
+          title: 'Law Governing Land in Rwanda',
+          category: 'Land & Property',
+          year: '2021',
+          status: 'In Force',
+          citation: 'Republic of Rwanda, Law N° 27/2021 of 10/06/2021 Governing Land in Rwanda, Official Gazette N° Special of 10/06/2021.',
+          summary: 'Governs land tenure, ownership, emphyteutic leases, NLA registration, transfer of land rights, land use management, and resolution of land disputes across Rwanda.',
+          keyArticles: [
+            'Article 5: Equal rights to land ownership and access for both men and women without discrimination.',
+            'Article 17: Mandatory registration of land rights with the National Land Authority (NLA).',
+            'Article 34: Procedures for transfer, sale, donation, and succession of land titles.',
+            'Article 63: Mediation by Abunzi committee prior to filing certain land disputes before Primary Courts.'
+          ],
+          fullText: `REPUBLIC OF RWANDA\nOFFICIAL GAZETTE N° SPECIAL OF 10/06/2021\nLAW N° 27/2021 OF 10/06/2021 GOVERNING LAND\n\nArticle 5: Non-discrimination in land rights\nAll Rwandans enjoy equal rights of access to and ownership of land. Discrimination based on sex or marital status is strictly prohibited.\n\nArticle 17: Registration of land\nRegistration of land is mandatory for every landowner to secure an official certificate of land title.`
+        },
+        {
+          id: 'gaz-4',
+          number: 'Official Gazette N° Special of 06/09/2018',
+          lawCode: 'Law N° 66/2018',
+          fullCode: 'Law N° 66/2018 of 30/08/2018',
+          title: 'Law Regulating Labour in Rwanda',
+          category: 'Labor & Employment',
+          year: '2018',
+          status: 'In Force',
+          citation: 'Republic of Rwanda, Law N° 66/2018 of 30/08/2018 Regulating Labour in Rwanda, Official Gazette N° Special of 06/09/2018.',
+          summary: 'Defines employment contracts, working hours, leave entitlements, occupational safety, termination rules, terminal benefits, and labor dispute settlement.',
+          keyArticles: [
+            'Article 12: Written and unwritten employment contracts and probation period limits (maximum 6 months).',
+            'Article 24: Statutory notice periods for termination of indefinite employment contracts.',
+            'Article 43: Standard 45-hour working week and paid annual leave entitlements.',
+            'Article 102: Amicable settlement before the Labour Inspector prior to court litigation.'
+          ],
+          fullText: `REPUBLIC OF RWANDA\nOFFICIAL GAZETTE N° SPECIAL OF 06/09/2018\nLAW N° 66/2018 OF 30/08/2018 REGULATING LABOUR IN RWANDA\n\nArticle 12: Probation period\nA probation period cannot exceed three (3) months, renewable once for a maximum total duration of six (6) months.\n\nArticle 24: Notice of termination\nTermination of an indefinite-term contract requires prior written notice based on length of service.`
+        },
+        {
+          id: 'gaz-5',
+          number: 'Official Gazette N° Special of 08/07/2016',
+          lawCode: 'Law N° 27/2016',
+          fullCode: 'Law N° 27/2016 of 08/07/2016',
+          title: 'Law Governing Matrimonial Regimes, Donations and Successions',
+          category: 'Family & Succession',
+          year: '2016',
+          status: 'In Force',
+          citation: 'Republic of Rwanda, Law N° 27/2016 of 08/07/2016 Governing Matrimonial Regimes, Donations and Successions, Official Gazette N° Special of 08/07/2016.',
+          summary: 'Regulates marriage property regimes (community of property, limited community, separation of property), gifts/donations, wills, and equal inheritance rights for children.',
+          keyArticles: [
+            'Article 2: Recognition of three matrimonial regimes chosen at civil marriage.',
+            'Article 54: Equal inheritance rights of all legitimate children without gender discrimination.',
+            'Article 71: Formalities for authentic and holographic wills.'
+          ],
+          fullText: `REPUBLIC OF RWANDA\nOFFICIAL GAZETTE N° SPECIAL OF 08/07/2016\nLAW N° 27/2016 OF 08/07/2016 GOVERNING MATRIMONIAL REGIMES, DONATIONS AND SUCCESSIONS\n\nArticle 54: Equality of children in succession\nAll children of the deceased inherit equally without any discrimination between male and female children.`
+        },
+        {
+          id: 'gaz-6',
+          number: 'Official Gazette N° Special of 24/12/2015',
+          lawCode: 'Constitution (2015)',
+          fullCode: 'Constitution of 2003 revised in 2015',
+          title: 'The Constitution of the Republic of Rwanda',
+          category: 'Constitutional',
+          year: '2015',
+          status: 'Supreme Law',
+          citation: 'The Constitution of the Republic of Rwanda of 2003 Revised in 2015, Official Gazette N° Special of 24/12/2015.',
+          summary: 'The supreme law of the Republic of Rwanda enshrining fundamental human rights, separation of powers, independence of the judiciary, equality before the law, and due process.',
+          keyArticles: [
+            'Article 15: Every person has the right to physical and mental integrity and equality before the law.',
+            'Article 29: Right to due process of law, presumption of innocence, and right to legal representation.',
+            'Article 150: Independence and impartiality of the Judiciary.'
+          ],
+          fullText: `THE CONSTITUTION OF THE REPUBLIC OF RWANDA\n\nArticle 29: Right to due process of law\nEvery person has the right to due process of law, which includes the right:\n1° to be informed of the nature and cause of charges and the right to defence and legal representation;\n2° to be presumed innocent until proved guilty by a competent Court.`
+        }
+      ],
+
+      educationGuides: [
+        {
+          id: 'edu-1',
+          category: 'Constitutional Rights',
+          readTime: '4 min read',
+          title: 'Your Rights Upon Arrest & Police Questioning in Rwanda',
+          summary: 'Understand the 5-day police custody limit, right to remain silent, right to inform family, and right to an advocate under the Criminal Procedure Code.',
+          steps: [
+            'Right to be informed immediately of the specific reasons for arrest in a language you understand.',
+            'Right to contact a lawyer of your choice or request a court-appointed advocate (Pro Bono) if indigent.',
+            'Judicial Police custody (garde à vue) cannot exceed five (5) days without appearing before a Prosecutor.',
+            'Pre-trial detention can only be ordered by a competent Judge in a public hearing.'
+          ],
+          legalBasis: 'Constitution Art. 29 & Law N° 027/2019 relating to Criminal Procedure'
+        },
+        {
+          id: 'edu-2',
+          category: 'Land & Property',
+          readTime: '5 min read',
+          title: 'How to Safely Buy & Transfer Land Titles in Rwanda',
+          summary: 'Step-by-step citizen checklist to verify UPI numbers, check spousal consent, avoid encumbrances, and transfer titles via Irembo & NLA.',
+          steps: [
+            'Verify the Unique Parcel Identifier (UPI) and check for mortgages or caveats via the National Land Authority (NLA) registry.',
+            'Confirm marital status of the seller: if married under Community of Property, both spouses must sign the transfer deed.',
+            'Sign the notarized sale agreement before a Sector Land Notary or Private Notary.',
+            'Submit the transfer dossier and pay statutory registration fees to receive the updated electronic land title.'
+          ],
+          legalBasis: 'Law N° 27/2021 Governing Land (Articles 17 & 34)'
+        },
+        {
+          id: 'edu-3',
+          category: 'Court Procedures',
+          readTime: '6 min read',
+          title: 'How to File a Civil Claim & Use the IECMS System',
+          summary: 'Learn when Abunzi mediation is mandatory, how jurisdiction works between Primary and Intermediate Courts, and how to submit filings online.',
+          steps: [
+            'Check if your dispute falls under the mandatory jurisdiction of the Abunzi (Mediators) Committee (disputes valued up to 3,000,000 RWF).',
+            'Gather supporting evidence: contracts, receipts, witness statements, and National ID.',
+            'Register or log in to the Integrated Electronic Case Management System (IECMS) or seek assistance at a Maison d’Accès à la Justice (MAJ).',
+            'Pay the court registry fee and track your hearing summons date.'
+          ],
+          legalBasis: 'Law N° 22/2018 relating to Civil, Commercial, Labour and Administrative Procedure'
+        },
+        {
+          id: 'edu-4',
+          category: 'Family & Succession',
+          readTime: '4 min read',
+          title: 'Matrimonial Property Regimes & Inheritance Explained',
+          summary: 'Clear explanation of the three legal marriage property options in Rwanda and how inheritance is protected for spouses and children.',
+          steps: [
+            'Community of Property: All assets acquired before and during marriage are owned jointly (50/50).',
+            'Limited Community of Property: Only property acquired during marriage is shared; pre-marital assets remain separate.',
+            'Separation of Property: Each spouse retains sole ownership and management of their own assets.',
+            'All children—boys and girls equally—have guaranteed statutory inheritance rights.'
+          ],
+          legalBasis: 'Law N° 27/2016 Governing Matrimonial Regimes, Donations and Successions'
+        }
+      ],
+
+      courtSchedules: [
+        {
+          caseNumber: 'RC 0412/26/TB/KCY',
+          court: 'Primary Court of Kacyiru',
+          venue: 'Kacyiru, Gasabo • Courtroom B',
+          caseType: 'Civil – Tenancy & Lease',
+          partiesPublic: 'N. Habimana v. Kigali Urban Properties Ltd',
+          hearingDate: 'Nov 16, 2026 • 09:00 AM',
+          stage: 'Substantive Hearing',
+          provision: 'Law N° 27/2021 Art. 48 (Lease Obligations)',
+          status: 'Scheduled'
+        },
+        {
+          caseNumber: 'RCOM 0891/26/TC',
+          court: 'Commercial Court of Nyarugenge',
+          venue: 'Nyarugenge, Kigali • Room 3',
+          caseType: 'Commercial – Supply Contract',
+          partiesPublic: 'Rwanda Coffee Roasters Coop v. East Africa Packaging Ltd',
+          hearingDate: 'Nov 17, 2026 • 10:30 AM',
+          stage: 'Pre-Trial Conference',
+          provision: 'Law N° 45/2011 Governing Contracts Art. 64',
+          status: 'Scheduled'
+        },
+        {
+          caseNumber: 'RSOC 0105/26/TGI/GSB',
+          court: 'Intermediate Court of Gasabo',
+          venue: 'Rusororo, Gasabo • Labor Chamber',
+          caseType: 'Labor – Unfair Dismissal',
+          partiesPublic: 'E. Mugabo v. Apex Security Services',
+          hearingDate: 'Nov 18, 2026 • 09:30 AM',
+          stage: 'Judgment Pronouncement',
+          provision: 'Law N° 66/2018 Art. 24 & Art. 28',
+          status: 'Upcoming Verdict'
+        },
+        {
+          caseNumber: 'RP 0319/26/TGI/HYE',
+          court: 'Intermediate Court of Huye',
+          venue: 'Huye Town • Criminal Chamber 1',
+          caseType: 'Criminal – Public Hearing',
+          partiesPublic: 'NPPA v. Accused (Presumed Innocent Pending Verdict)',
+          hearingDate: 'Nov 19, 2026 • 08:30 AM',
+          stage: 'Witness Examination',
+          provision: 'Law N° 68/2018 Art. 174 (Document Forgery)',
+          status: 'Scheduled'
+        },
+        {
+          caseNumber: 'RS/INCONST/SPEC 0003/26/SC',
+          court: 'Supreme Court of Rwanda',
+          venue: 'Kimihurura, Kigali • Main Bench',
+          caseType: 'Constitutional Review',
+          partiesPublic: 'Digital Rights Coalition v. Attorney General',
+          hearingDate: 'Nov 15, 2026 • 09:30 AM',
+          stage: 'In Session (Live Streamed)',
+          provision: 'Constitution Art. 29 & Law N° 058/2021',
+          status: 'Live Now'
+        }
+      ],
+
+      convictions: [
+        {
+          recordId: 'CONV-RW-2026-0841',
+          caseRef: 'RPA 0214/25/HC/KIG (Final Judgment)',
+          court: 'High Court – Kigali',
+          convictionDate: 'Oct 14, 2026',
+          offenceCategory: 'Financial & Corruption',
+          offence: 'Embezzlement of Public Funds & Tender Fraud',
+          legalProvision: 'Law N° 54/2018 on Fighting Against Corruption, Art. 10 & Law N° 68/2018, Art. 252',
+          sentence: '7 Years Imprisonment + Fine of 15,000,000 RWF + Restitution',
+          duration: '7 Years (Effective Oct 2026 – Oct 2033)',
+          subjectIdentifier: 'Redacted Initials: M.K. (Adult Male, Final Appellate Conviction)'
+        },
+        {
+          recordId: 'CONV-RW-2026-0792',
+          caseRef: 'RP 0512/25/TGI/NYG (Final Judgment)',
+          court: 'Intermediate Court of Nyarugenge',
+          convictionDate: 'Sep 22, 2026',
+          offenceCategory: 'Forgery & Cybercrime',
+          offence: 'Forgery and Use of Counterfeit Land Titles',
+          legalProvision: 'Law N° 68/2018 Determining Offences and Penalties, Art. 276',
+          sentence: '5 Years Imprisonment + Fine of 3,000,000 RWF',
+          duration: '5 Years (Effective Sep 2026 – Sep 2031)',
+          subjectIdentifier: 'Redacted Initials: J.B.N. (Adult Male, Appeal Period Expired)'
+        },
+        {
+          recordId: 'CONV-RW-2026-0618',
+          caseRef: 'RP 0188/26/TB/MUH (Final Judgment)',
+          court: 'Primary Court of Muhanga',
+          convictionDate: 'Aug 09, 2026',
+          offenceCategory: 'Environmental Offences',
+          offence: 'Illegal Mining and Destruction of Protected Wetland Buffer Zone',
+          legalProvision: 'Law N° 48/2018 on Environment, Art. 44 & Law N° 68/2018, Art. 416',
+          sentence: '2 Years Imprisonment + Environmental Restoration Order',
+          duration: '2 Years (Effective Aug 2026 – Aug 2028)',
+          subjectIdentifier: 'Redacted Initials: S.R. (Adult Male, Final Conviction)'
+        },
+        {
+          recordId: 'CONV-RW-2026-0504',
+          caseRef: 'RPA 0098/25/HC/MUS (Final Judgment)',
+          court: 'High Court – Musanze Chamber',
+          convictionDate: 'Jun 30, 2026',
+          offenceCategory: 'Property & Fraud',
+          offence: 'Obtaining Property by False Pretences (Commercial Fraud)',
+          legalProvision: 'Law N° 68/2018 Determining Offences and Penalties, Art. 174',
+          sentence: '3 Years Imprisonment + Fine of 2,000,000 RWF',
+          duration: '3 Years (Effective Jun 2026 – Jun 2029)',
+          subjectIdentifier: 'Redacted Initials: A.U. (Adult Female, Final Appellate Conviction)'
+        }
+      ],
+
+      appointments: [
+        {
+          id: 'APT-2026-101',
+          clientName: 'Eric Niyonzima',
+          clientEmail: 'eric.niyonzima@citizen.rw',
+          clientPhone: '+250 788 123 456',
+          lawyerId: 'law-1',
+          lawyerName: 'Me. Jean-Claude Habimana',
+          officeAddress: 'KG 7 Ave, Kigali Heights, 4th Floor, Suite 402, Kimihurura',
+          meetingType: 'Face-to-Face at Office',
+          date: '2026-11-18',
+          timeSlot: '10:30 AM',
+          topic: 'Commercial Partnership Agreement & RDB Registration Review',
+          status: 'Confirmed',
+          createdAt: '2026-11-14'
+        },
+        {
+          id: 'APT-2026-102',
+          clientName: 'Eric Niyonzima',
+          clientEmail: 'eric.niyonzima@citizen.rw',
+          clientPhone: '+250 788 123 456',
+          lawyerId: 'law-4',
+          lawyerName: 'Me. Aline Mukamana',
+          officeAddress: 'RN4 Main Avenue, Virunga Business Center, 1st Floor, Musanze',
+          meetingType: 'Face-to-Face at Office',
+          date: '2026-11-21',
+          timeSlot: '11:00 AM',
+          topic: 'Land Title Boundary Verification & Transfer Deed',
+          status: 'Pending Lawyer Approval',
+          createdAt: '2026-11-15'
+        }
+      ],
+
+      researchNotes: [
+        {
+          id: 'RES-01',
+          title: 'Comparative Analysis: Electronic Evidence Under Law N° 058/2021 vs. Civil Procedure',
+          lawRef: 'Law N° 058/2021 & Case RS/INCONST/SPEC 0003/26/SC',
+          note: 'Supreme Court oral arguments highlight the necessity of NCSA-compliant audit trails when submitting digital contracts in commercial litigation.',
+          updatedAt: 'Nov 15, 2026'
+        },
+        {
+          id: 'RES-02',
+          title: 'Spousal Consent & Emphyteutic Lease Transfers in Peri-Urban Kigali',
+          lawRef: 'Law N° 27/2021 Art. 34 & Law N° 27/2016',
+          note: 'Mandatory dual-spousal signature verification at Sector Land Notaries significantly reduced post-sale land annulment petitions between 2022 and 2026.',
+          updatedAt: 'Nov 10, 2026'
+        }
+      ],
+
+      messages: [
+        {
+          id: 'MSG-01',
+          from: 'Me. Jean-Claude Habimana',
+          to: 'Eric Niyonzima',
+          subject: 'Re: Commercial Partnership Agreement Review',
+          body: 'Muraho Eric, your face-to-face consultation for Nov 18 at 10:30 AM is confirmed. Please bring your draft Memorandum of Association and National ID to Kigali Heights Suite 402.',
+          timestamp: '2 hours ago',
+          unread: true
+        }
+      ],
+
+      notifications: [
+        {
+          id: 'N-1',
+          title: 'Face-to-Face Meeting Confirmed',
+          desc: 'Me. Jean-Claude Habimana confirmed your office visit on Nov 18 at 10:30 AM.',
+          time: '2h ago',
+          unread: true
+        },
+        {
+          id: 'N-2',
+          title: 'Supreme Court Live Session Active',
+          desc: 'Case RS/INCONST/SPEC 0003/26/SC is now streaming publicly.',
+          time: '3h ago',
+          unread: true
+        },
+        {
+          id: 'N-3',
+          title: 'Law N° 058/2021 Privacy Safeguard',
+          desc: 'Your workspace credentials are encrypted under Rwanda Data Protection standards.',
+          time: '1d ago',
+          unread: true
+        }
+      ]
+    };
+
+    // -------------------------------------------------------------------------
+    // 2. APPLICATION STATE & STORAGE
+    // -------------------------------------------------------------------------
+    const STORAGE_KEY = 'veridex_rwanda_v3_split_editorial';
+
+    function getDefaultState() {
+      return {
+        isAuthenticated: false, // Starts on the Split-Screen Login & Registration Gateway!
+        authMode: 'signin', // 'signin' | 'signup'
+        authRole: 'customer', // 'customer' | 'lawyer' | 'scholar'
+        currentPage: 'home', // 'home' | 'lawyers' | 'live-court' | 'gazette' | 'education' | 'courts' | 'portal'
+        currentUser: {
+          name: 'Eric Niyonzima',
+          email: 'eric.niyonzima@citizen.rw',
+          phone: '+250 788 123 456',
+          location: 'Kigali – Gasabo',
+          role: 'customer',
+          extraInfo: 'Land & Property Law',
+          rbaNumber: '',
+          fee: ''
+        },
+        selectedLawyerIdForDashboard: 'law-1',
+        activeStreamId: 'str-1',
+        streamFilter: 'ALL',
+        courtsSubTab: 'schedules',
+        bookmarkedLaws: ['gaz-2', 'gaz-3'],
+        hearingReminders: ['str-3'],
+        ...SEED_DATA
+      };
+    }
+
+    function loadState() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          return { ...getDefaultState(), ...JSON.parse(saved) };
+        }
+      } catch (e) {
+        console.warn('State restore skipped:', e);
+      }
+      return getDefaultState();
+    }
+
+    let state = loadState();
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {
+        console.warn('State persist skipped:', e);
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // 3. TOASTS, MODALS & NOTIFICATIONS
+    // -------------------------------------------------------------------------
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const colors = {
+        success: 'bg-forest-900 border-copper-500 text-cream-50',
+        info: 'bg-forest-900 border-gold-500 text-cream-50',
+        warning: 'bg-amber-950 border-gold-500 text-cream-50'
+      };
+      const toast = document.createElement('div');
+      toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3.5 rounded-xl border-l-4 shadow-xl text-xs sm:text-sm font-medium transition-all duration-300 ${colors[type] || colors.success}`;
+      toast.innerHTML = `
+        <i data-lucide="check-circle-2" class="w-4 h-4 text-gold-400 shrink-0"></i>
+        <span class="flex-grow">${message}</span>
+      `;
+      container.appendChild(toast);
+      lucide.createIcons();
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(8px)';
+        setTimeout(() => toast.remove(), 280);
+      }, 4000);
+    }
+
+    function openModal(htmlContent) {
+      const backdrop = document.getElementById('modal-backdrop');
+      const modalBox = document.getElementById('modal-content');
+      modalBox.innerHTML = htmlContent;
+      backdrop.classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeModal() {
+      document.getElementById('modal-backdrop').classList.add('hidden');
+    }
+
+    document.getElementById('modal-backdrop').addEventListener('click', (e) => {
+      if (e.target.id === 'modal-backdrop') closeModal();
+    });
+
+    function pushNotification(title, desc) {
+      state.notifications.unshift({
+        id: 'N-' + Date.now(),
+        title,
+        desc,
+        time: 'Just now',
+        unread: true
+      });
+      saveState();
+    }
+
+    // -------------------------------------------------------------------------
+    // 4. VIEW 1: SPLIT-SCREEN LOGIN & REGISTRATION GATEWAY (Inspired by Image 1)
+    // -------------------------------------------------------------------------
+    function renderAuthGateway() {
+      const mode = state.authMode; // 'signin' or 'signup'
+      const role = state.authRole; // 'customer' | 'lawyer' | 'scholar'
+
+      const personaMeta = {
+        customer: {
+          label: 'Customer',
+          avatarIcon: 'user',
+          headline: 'Justice Within Everyone’s Reach.',
+          subtext: 'Find verified Rwandan advocates, schedule face-to-face office consultations, and watch authorized live court sessions.',
+          extraLabel: 'Primary Legal Interest',
+          extraPlaceholder: 'e.g., Land & Property, Family Law, Business Contract',
+          emailPlaceholder: 'clarisse.m@citizen.rw'
+        },
+        lawyer: {
+          label: 'Lawyer',
+          avatarIcon: 'scale',
+          headline: 'Modern Chambers. Verified Practice.',
+          subtext: 'Connect with clients across all 30 districts, manage physical office slots, and showcase your RBA credentials.',
+          extraLabel: 'RBA Roll Number & Specialization',
+          extraPlaceholder: 'e.g., RBA/ADV/0942 – Commercial & Land Law',
+          emailPlaceholder: 'me.gasana@kigalichambers.rw'
+        },
+        scholar: {
+          label: 'Scholar',
+          avatarIcon: 'book-marked',
+          headline: 'Structured Rwandan Jurisprudence.',
+          subtext: 'Query Official Gazette statutes, generate instant legal citations, and analyze anonymized sentencing registries.',
+          extraLabel: 'University / Research Institution',
+          extraPlaceholder: 'e.g., University of Rwanda – School of Law / ILPD',
+          emailPlaceholder: 's.umutoni@ur.ac.rw'
+        }
+      };
+
+      const meta = personaMeta[role];
+
+      return `
+        <div class="min-h-screen w-full flex flex-col lg:flex-row bg-white page-reveal">
+          <!-- LEFT 60% DRAMATIC ARCHITECTURAL & RWANDAN JUSTICE PANEL -->
+          <div class="lg:w-[58%] xl:w-[60%] auth-hero-bg text-white p-8 sm:p-12 lg:p-16 flex flex-col justify-between relative overflow-hidden min-h-[380px] lg:min-h-screen">
+            <!-- Subtle SVG Architectural Pillar Watermark -->
+            <svg class="absolute right-[-6%] bottom-[-6%] w-[440px] h-[440px] text-white/[0.04] pointer-events-none" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2L2 7v2h20V7L12 2zm-7 9v8h2v-8H5zm4 0v8h2v-8H9zm4 0v8h2v-8h-2zm4 0v8h2v-8h-2zM2 21h20v2H2v-2z"/>
+            </svg>
+
+            <!-- Top-Left Iconic Golden-Framed Brand Emblem (Inspired by Image 1) -->
+            <div class="relative z-10 flex items-center justify-between">
+              <div class="flex items-center gap-3.5">
+                <div class="w-8 h-11 border-[3.5px] border-gold-500 flex items-center justify-center">
+                  <span class="font-editorial font-bold text-gold-400 text-sm">V</span>
+                </div>
+                <div class="leading-tight tracking-wider">
+                  <p class="font-sans font-extrabold text-lg sm:text-xl tracking-[0.14em] text-white">VERIDEX</p>
+                  <p class="font-sans font-bold text-xs sm:text-sm tracking-[0.18em] text-cream-200">RWANDA JUSTICE</p>
+                </div>
+              </div>
+
+              <span class="hidden sm:inline-flex items-center gap-1.5 font-code text-[11px] uppercase tracking-widest text-gold-400 bg-white/10 px-3 py-1 rounded-full backdrop-blur-sm">
+                <span class="w-1.5 h-1.5 rounded-full bg-gold-400 live-dot"></span> Republic of Rwanda
+              </span>
+            </div>
+
+            <!-- Center-Left Bold Editorial Statement & Gold CTA -->
+            <div class="relative z-10 my-12 lg:my-auto max-w-xl space-y-5">
+              <p class="font-sans font-bold text-xs sm:text-sm uppercase tracking-[0.22em] text-gold-400">
+                ${mode === 'signin' ? 'WELCOME TO VERIDEX' : 'CREATE YOUR PORTAL'}
+              </p>
+              <h1 class="font-editorial font-bold text-4xl sm:text-5xl lg:text-[56px] leading-[1.06] tracking-tight text-white">
+                ${meta.headline}
+              </h1>
+              <p class="text-sm sm:text-base text-cream-200/85 leading-relaxed max-w-md">
+                ${meta.subtext}
+              </p>
+
+              <div class="pt-3 flex flex-wrap items-center gap-4">
+                <button type="button" onclick="setAuthMode('${mode === 'signin' ? 'signup' : 'signin'}')" class="px-7 py-3.5 bg-gold-500 hover:bg-gold-400 text-forest-950 font-sans font-extrabold text-xs uppercase tracking-[0.16em] transition shadow-lg">
+                  ${mode === 'signin' ? 'CREATE AN ACCOUNT' : 'BACK TO SIGN IN'}
+                </button>
+              </div>
+            </div>
+
+            <!-- Bottom Legal Terms & Investor Quick-Access Strip -->
+            <div class="relative z-10 space-y-3 pt-6 border-t border-white/15">
+              <p class="text-xs text-cream-200/80">
+                By creating an account or signing in, you agree to <span class="underline text-white">Rwanda Data Protection Law N° 058/2021</span> & judicial confidentiality terms.
+              </p>
+              <div class="flex flex-wrap items-center gap-2 pt-1">
+                <span class="font-code text-[10px] uppercase tracking-wider text-gold-400">Instant Investor Preview:</span>
+                <button type="button" onclick="instantDemoEnter('customer')" class="px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-white font-code text-[11px] transition">Demo Customer</button>
+                <button type="button" onclick="instantDemoEnter('lawyer')" class="px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-white font-code text-[11px] transition">Demo Lawyer</button>
+                <button type="button" onclick="instantDemoEnter('scholar')" class="px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-white font-code text-[11px] transition">Demo Scholar</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT 40% PURE WHITE MINIMAL AUTHENTICATION & REGISTRATION PANEL -->
+          <div class="lg:w-[42%] xl:w-[40%] bg-white p-8 sm:p-12 lg:p-14 flex flex-col justify-center">
+            <div class="max-w-sm w-full mx-auto space-y-6">
+              <!-- Top Circular Portrait Avatar Framed in Gold Ring (Inspired by Image 1) -->
+              <div class="flex flex-col items-center text-center space-y-3">
+                <div class="w-16 h-16 rounded-full p-1 border-2 border-gold-500 bg-cream-100 flex items-center justify-center shadow-sm">
+                  <div class="w-full h-full rounded-full bg-forest-900 text-gold-400 flex items-center justify-center">
+                    <i data-lucide="${meta.avatarIcon}" class="w-7 h-7"></i>
+                  </div>
+                </div>
+
+                <!-- Persona Selector Pills (Customer | Lawyer | Scholar) -->
+                <div class="inline-flex rounded-full bg-cream-200 p-1 border border-cream-300">
+                  ${['customer', 'lawyer', 'scholar'].map(r => `
+                    <button type="button" onclick="setAuthRole('${r}')" class="px-4 py-1.5 rounded-full text-xs font-bold capitalize transition ${role === r ? 'bg-forest-900 text-gold-400 shadow-sm' : 'text-forest-800 hover:text-forest-950'}">
+                      ${r}
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+
+              <!-- Section Heading -->
+              <div class="text-center">
+                <h2 class="font-sans font-bold text-xs uppercase tracking-[0.2em] text-gold-600">
+                  ${mode === 'signin' ? `SIGN IN AS ${meta.label.toUpperCase()}` : `REGISTER AS ${meta.label.toUpperCase()}`}
+                </h2>
+                <p class="text-xs text-slate-500 mt-1">
+                  ${mode === 'signin' ? 'Enter your credentials to access your tailored legal portal.' : 'Enter your email, phone number & where you live in Rwanda.'}
+                </p>
+              </div>
+
+              ${mode === 'signin' ? `
+                <!-- SIGN IN FORM (Minimal Bottom-Border Inputs Matching Image 1) -->
+                <form onsubmit="handleSignInSubmit(event)" class="space-y-5">
+                  <div class="relative">
+                    <div class="flex items-center gap-3 underline-input py-2.5">
+                      <i data-lucide="mail" class="w-4 h-4 text-slate-400 shrink-0"></i>
+                      <input id="signin-email" type="text" required placeholder="Email Address or Phone Number" class="w-full text-sm text-forest-950 placeholder-slate-400 bg-transparent focus:outline-none" />
+                    </div>
+                  </div>
+
+                  <div class="relative">
+                    <div class="flex items-center gap-3 underline-input py-2.5">
+                      <i data-lucide="lock" class="w-4 h-4 text-slate-400 shrink-0"></i>
+                      <input id="signin-password" type="password" required placeholder="Password" class="w-full text-sm text-forest-950 placeholder-slate-400 bg-transparent focus:outline-none" />
+                    </div>
+                  </div>
+
+                  <div class="flex items-center justify-between text-xs text-slate-500 pt-1">
+                    <label class="inline-flex items-center gap-2 cursor-pointer">
+                      <input type="checkbox" checked class="rounded border-slate-300 text-forest-900 focus:ring-forest-900" />
+                      <span>Keep me logged in</span>
+                    </label>
+                    <button type="button" onclick="showToast('Password recovery link sent if email exists in registry.', 'info')" class="underline hover:text-forest-900">
+                      Forgot password?
+                    </button>
+                  </div>
+
+                  <button type="submit" class="w-full py-3.5 bg-cream-200 hover:bg-forest-900 text-forest-950 hover:text-gold-400 font-sans font-extrabold text-xs uppercase tracking-[0.16em] transition">
+                    LOGIN TO YOUR ACCOUNT
+                  </button>
+
+                  <p class="text-center text-xs text-slate-500 pt-2">
+                    New to VERIDEX?
+                    <button type="button" onclick="setAuthMode('signup')" class="font-bold text-forest-900 underline ml-1">
+                      Create a ${meta.label} Account
+                    </button>
+                  </p>
+                </form>
+              ` : `
+                <!-- CREATE ACCOUNT FORM (Collects Full Name, Email, Phone, Where You Live + Role Details) -->
+                <form onsubmit="handleSignUpSubmit(event)" class="space-y-4">
+                  <div class="flex items-center gap-3 underline-input py-2">
+                    <i data-lucide="user" class="w-4 h-4 text-slate-400 shrink-0"></i>
+                    <input id="signup-name" type="text" required placeholder="${role === 'lawyer' ? 'Full Name (e.g., Me. Emmanuel Gasana)' : (role === 'scholar' ? 'Full Name & Title (e.g., Dr. Solange Umutoni)' : 'Full Legal Name')}" class="w-full text-sm text-forest-950 placeholder-slate-400 bg-transparent focus:outline-none" />
+                  </div>
+
+                  <div class="flex items-center gap-3 underline-input py-2">
+                    <i data-lucide="mail" class="w-4 h-4 text-slate-400 shrink-0"></i>
+                    <input id="signup-email" type="email" required placeholder="Email Address (${meta.emailPlaceholder})" class="w-full text-sm text-forest-950 placeholder-slate-400 bg-transparent focus:outline-none" />
+                  </div>
+
+                  <div class="flex items-center gap-3 underline-input py-2">
+                    <i data-lucide="phone" class="w-4 h-4 text-slate-400 shrink-0"></i>
+                    <input id="signup-phone" type="tel" required placeholder="Phone Number (+250 788 000 000)" class="w-full text-sm text-forest-950 placeholder-slate-400 bg-transparent focus:outline-none" />
+                  </div>
+
+                  <div class="flex items-center gap-3 underline-input py-2">
+                    <i data-lucide="map-pin" class="w-4 h-4 text-slate-400 shrink-0"></i>
+                    <select id="signup-location" required class="w-full text-sm text-forest-950 bg-transparent focus:outline-none">
+                      <option value="" disabled selected>Where You Live (Select District / City)</option>
+                      <option value="Kigali – Gasabo">Kigali – Gasabo</option>
+                      <option value="Kigali – Nyarugenge">Kigali – Nyarugenge</option>
+                      <option value="Kigali – Kicukiro">Kigali – Kicukiro</option>
+                      <option value="Musanze (Northern Province)">Musanze (Northern Province)</option>
+                      <option value="Huye (Southern Province)">Huye (Southern Province)</option>
+                      <option value="Rubavu (Western Province)">Rubavu (Western Province)</option>
+                      <option value="Muhanga (Southern Province)">Muhanga (Southern Province)</option>
+                      <option value="Rwamagana (Eastern Province)">Rwamagana (Eastern Province)</option>
+                      <option value="Rusizi (Western Province)">Rusizi (Western Province)</option>
+                      <option value="Nyagatare (Eastern Province)">Nyagatare (Eastern Province)</option>
+                    </select>
+                  </div>
+
+                  <div class="flex items-center gap-3 underline-input py-2">
+                    <i data-lucide="briefcase" class="w-4 h-4 text-slate-400 shrink-0"></i>
+                    <input id="signup-extra" type="text" required placeholder="${meta.extraPlaceholder}" class="w-full text-sm text-forest-950 placeholder-slate-400 bg-transparent focus:outline-none" />
+                  </div>
+
+                  ${role === 'lawyer' ? `
+                    <div class="flex items-center gap-3 underline-input py-2">
+                      <i data-lucide="wallet" class="w-4 h-4 text-slate-400 shrink-0"></i>
+                      <input id="signup-fee" type="text" required placeholder="Consultation Fee (e.g., 30,000 RWF / hr)" class="w-full text-sm text-forest-950 placeholder-slate-400 bg-transparent focus:outline-none" />
+                    </div>
+                  ` : ''}
+
+                  <div class="flex items-center gap-3 underline-input py-2">
+                    <i data-lucide="lock" class="w-4 h-4 text-slate-400 shrink-0"></i>
+                    <input id="signup-password" type="password" required placeholder="Create Password" class="w-full text-sm text-forest-950 placeholder-slate-400 bg-transparent focus:outline-none" />
+                  </div>
+
+                  <button type="submit" class="w-full py-3.5 mt-2 bg-forest-900 hover:bg-forest-800 text-gold-400 font-sans font-extrabold text-xs uppercase tracking-[0.16em] transition">
+                    CREATE ${meta.label.toUpperCase()} ACCOUNT
+                  </button>
+
+                  <p class="text-center text-xs text-slate-500 pt-1">
+                    Already registered?
+                    <button type="button" onclick="setAuthMode('signin')" class="font-bold text-forest-900 underline ml-1">
+                      Sign In Here
+                    </button>
+                  </p>
+                </form>
+              `}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function setAuthRole(role) {
+      state.authRole = role;
+      saveState();
+      renderApp();
+    }
+
+    function setAuthMode(mode) {
+      state.authMode = mode;
+      saveState();
+      renderApp();
+    }
+
+    function handleSignInSubmit(e) {
+      e.preventDefault();
+      const identifier = document.getElementById('signin-email').value.trim();
+      const role = state.authRole;
+
+      // Preserve existing registered email if matching, or configure session from input
+      const inferredName = identifier.includes('@')
+        ? identifier.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
+        : (role === 'lawyer' ? 'Me. Jean-Claude Habimana' : (role === 'scholar' ? 'Dr. Solange Umutoni' : 'Eric Niyonzima'));
+
+      state.currentUser = {
+        ...state.currentUser,
+        name: state.currentUser.email === identifier ? state.currentUser.name : inferredName,
+        email: identifier.includes('@') ? identifier : state.currentUser.email,
+        phone: !identifier.includes('@') ? identifier : state.currentUser.phone,
+        role
+      };
+      state.isAuthenticated = true;
+      state.currentPage = 'home';
+      saveState();
+      renderApp();
+      showToast(`Signed in as ${state.currentUser.name} (${role.toUpperCase()}).`);
+    }
+
+    function handleSignUpSubmit(e) {
+      e.preventDefault();
+      const role = state.authRole;
+      const name = document.getElementById('signup-name').value.trim();
+      const email = document.getElementById('signup-email').value.trim();
+      const phone = document.getElementById('signup-phone').value.trim();
+      const location = document.getElementById('signup-location').value;
+      const extraInfo = document.getElementById('signup-extra').value.trim();
+      const feeEl = document.getElementById('signup-fee');
+      const fee = feeEl ? feeEl.value.trim() : '';
+
+      state.currentUser = {
+        name,
+        email,
+        phone,
+        location,
+        role,
+        extraInfo,
+        fee
+      };
+
+      // If registering as a Lawyer, automatically publish their profile to the live Lawyers Directory!
+      if (role === 'lawyer') {
+        const displayName = name.startsWith('Me.') ? name : `Me. ${name}`;
+        const initials = displayName.replace(/^Me\.\s*/i, '').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase() || 'AV';
+        const newId = 'law-' + Date.now();
+        state.lawyers.unshift({
+          id: newId,
+          name: displayName,
+          title: 'Registered Advocate (RBA)',
+          specialization: extraInfo.includes('–') ? extraInfo.split('–')[1].trim() : extraInfo,
+          qualifications: 'LL.B. (Hons), Post-Graduate Diploma in Legal Practice (ILPD)',
+          experience: 6,
+          district: location,
+          officeAddress: `${location} Chambers, Suite 204`,
+          phone,
+          email,
+          fee: fee || '30,000 RWF / hr',
+          feeShort: (fee || '30,000 RWF').split('/')[0].trim(),
+          verified: true,
+          rbaNumber: extraInfo.includes('RBA') ? extraInfo.split('–')[0].trim() : 'RBA/ADV/1309',
+          availability: ['Mon 10:00', 'Wed 14:00', 'Fri 11:00'],
+          languages: ['Kinyarwanda', 'English', 'French'],
+          bio: `Practicing advocate based in ${location}, advising clients on ${extraInfo}.`,
+          initials,
+          cardTone: 'from-forest-900 to-copper-700'
+        });
+        state.selectedLawyerIdForDashboard = newId;
+      }
+
+      state.isAuthenticated = true;
+      state.currentPage = 'home';
+      pushNotification(
+        `Welcome to VERIDEX, ${name}`,
+        `Your ${role.toUpperCase()} portal is tailored for ${location} (${extraInfo}).`
+      );
+      saveState();
+      renderApp();
+      showToast(`Account created! Welcome to VERIDEX, ${name}.`);
+    }
+
+    function instantDemoEnter(role) {
+      const demos = {
+        customer: {
+          name: 'Eric Niyonzima',
+          email: 'eric.niyonzima@citizen.rw',
+          phone: '+250 788 123 456',
+          location: 'Kigali – Gasabo',
+          role: 'customer',
+          extraInfo: 'Land & Commercial Law',
+          fee: ''
+        },
+        lawyer: {
+          name: 'Me. Jean-Claude Habimana',
+          email: 'jc.habimana@veridex.rw',
+          phone: '+250 788 310 492',
+          location: 'Kigali – Gasabo',
+          role: 'lawyer',
+          extraInfo: 'RBA/ADV/0412 – Commercial & Corporate Law',
+          fee: '50,000 RWF / hr'
+        },
+        scholar: {
+          name: 'Dr. Solange Umutoni',
+          email: 's.umutoni@ur.ac.rw',
+          phone: '+250 788 609 312',
+          location: 'Huye (Southern Province)',
+          role: 'scholar',
+          extraInfo: 'University of Rwanda – School of Law',
+          fee: ''
+        }
+      };
+      state.currentUser = demos[role];
+      state.authRole = role;
+      state.isAuthenticated = true;
+      state.currentPage = 'home';
+      saveState();
+      renderApp();
+      showToast(`Entered as ${state.currentUser.name} (${role.toUpperCase()}).`);
+    }
+
+    function signOutToGateway() {
+      state.isAuthenticated = false;
+      state.authMode = 'signin';
+      saveState();
+      renderApp();
+      showToast('Signed out. You can switch roles or register a new account.', 'info');
+    }
+
+    // -------------------------------------------------------------------------
+    // 5. INTERIOR PLATFORM SHELL (Inspired by Image 2: Warm Cream, Forest & Copper)
+    // -------------------------------------------------------------------------
+    function renderInteriorShell() {
+      const user = state.currentUser;
+      const unreadNotifs = state.notifications.filter(n => n.unread).length;
+      const navItems = [
+        { id: 'home', label: 'Home' },
+        { id: 'lawyers', label: 'Lawyers & Meetings' },
+        { id: 'live-court', label: 'Live Court' },
+        { id: 'gazette', label: 'Gazette & Laws' },
+        { id: 'education', label: 'Legal Education' },
+        { id: 'courts', label: 'Courts & Records' },
+        { id: 'portal', label: 'My Portal' }
+      ];
+
+      let pageContent = '';
+      switch (state.currentPage) {
+        case 'lawyers': pageContent = renderLawyersPage(); break;
+        case 'live-court': pageContent = renderLiveCourtPage(); break;
+        case 'gazette': pageContent = renderGazettePage(); break;
+        case 'education': pageContent = renderEducationPage(); break;
+        case 'courts': pageContent = renderCourtsPage(); break;
+        case 'portal': pageContent = renderPortalPage(); break;
+        case 'home':
+        default: pageContent = renderEditorialHomePage(); break;
+      }
+
+      return `
+        <!-- Top Warm Cream Navigation Bar (Inspired by Image 2) -->
+        <header class="sticky top-0 z-40 bg-cream-100/95 backdrop-blur-md border-b border-cream-300">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between py-4">
+              <!-- Brand Mark (Left) -->
+              <a href="#home" onclick="navigateTo('home'); return false;" class="flex items-center gap-3 group">
+                <div class="w-9 h-9 rounded-full bg-forest-900 text-copper-400 flex items-center justify-center shadow-sm">
+                  <i data-lucide="scale" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <span class="font-editorial font-bold text-xl text-forest-900 tracking-tight leading-none block">VERIDEX</span>
+                  <span class="font-sans text-[9px] uppercase tracking-[0.2em] text-copper-700 font-bold block mt-0.5">Rwanda Legal Portal</span>
+                </div>
+              </a>
+
+              <!-- Centered Clean Navigation Links with Subtle Copper Underline -->
+              <nav class="hidden lg:flex items-center gap-6">
+                ${navItems.map(item => {
+                  const active = state.currentPage === item.id;
+                  return `
+                    <button onclick="navigateTo('${item.id}')" class="relative py-1.5 text-xs font-semibold transition ${active ? 'text-copper-700' : 'text-forest-800 hover:text-copper-600'}">
+                      <span class="inline-flex items-center gap-1.5">
+                        ${item.id === 'live-court' ? '<span class="w-1.5 h-1.5 rounded-full bg-red-600 live-dot"></span>' : ''}
+                        ${item.label}
+                      </span>
+                      ${active ? '<span class="absolute left-0 right-0 -bottom-1 h-0.5 bg-copper-600 rounded-full"></span>' : ''}
+                    </button>
+                  `;
+                }).join('')}
+              </nav>
+
+              <!-- Right Utility Icons: Quick Search, User Role Chip, Notifications & Sign Out -->
+              <div class="flex items-center gap-2.5">
+                <button onclick="openQuickSearchModal()" title="Search Platform" class="p-2 rounded-full text-forest-800 hover:bg-cream-200 transition">
+                  <i data-lucide="search" class="w-4 h-4"></i>
+                </button>
+
+                <button onclick="navigateTo('portal')" class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cream-200 hover:bg-cream-300 text-forest-900 text-xs font-semibold transition">
+                  <i data-lucide="user" class="w-3.5 h-3.5 text-copper-700"></i>
+                  <span class="capitalize">${user.role}</span>
+                  <span class="text-cream-400">•</span>
+                  <span class="text-[11px] text-forest-700 truncate max-w-[110px]">${user.location}</span>
+                </button>
+
+                <!-- Notifications Badge -->
+                <div class="relative">
+                  <button onclick="toggleNotifications()" aria-label="Notifications" class="relative p-2 rounded-full text-forest-800 hover:bg-cream-200 transition">
+                    <i data-lucide="bell" class="w-4 h-4"></i>
+                    ${unreadNotifs > 0 ? `<span class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-copper-600 text-white text-[10px] font-bold flex items-center justify-center">${unreadNotifs}</span>` : ''}
+                  </button>
+                  <div id="notif-dropdown" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-cream-300 z-50 overflow-hidden">
+                    <div class="p-3.5 bg-forest-900 text-cream-50 flex items-center justify-between">
+                      <span class="text-xs font-bold uppercase tracking-wider">Judicial Alerts</span>
+                      <button onclick="markAllNotificationsRead()" class="text-xs text-copper-400 hover:underline">Mark read</button>
+                    </div>
+                    <div class="max-h-72 overflow-y-auto divide-y divide-cream-200">
+                      ${state.notifications.map(n => `
+                        <div class="p-3.5 ${n.unread ? 'bg-copper-50' : 'bg-white'}">
+                          <div class="flex justify-between gap-2">
+                            <p class="text-xs font-bold text-forest-900">${n.title}</p>
+                            <span class="text-[10px] text-slate-400">${n.time}</span>
+                          </div>
+                          <p class="text-xs text-slate-600 mt-1">${n.desc}</p>
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
+                </div>
+
+                <button onclick="signOutToGateway()" title="Switch Account or Register" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-cream-300 bg-white hover:bg-cream-200 text-forest-900 text-xs font-semibold transition">
+                  <i data-lucide="log-out" class="w-3.5 h-3.5 text-copper-700"></i>
+                  <span class="hidden md:inline">Switch Role</span>
+                </button>
+
+                <button onclick="toggleMobileMenu()" aria-label="Menu" class="lg:hidden p-2 rounded-lg text-forest-900 hover:bg-cream-200">
+                  <i data-lucide="menu" class="w-5 h-5"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile Drawer -->
+          <div id="mobile-menu" class="hidden lg:hidden bg-cream-100 border-t border-cream-300 px-4 py-3 space-y-1">
+            ${navItems.map(item => `
+              <button onclick="navigateTo('${item.id}'); toggleMobileMenu()" class="w-full text-left px-3 py-2 rounded-lg text-sm font-semibold ${state.currentPage === item.id ? 'bg-forest-900 text-copper-400' : 'text-forest-900 hover:bg-cream-200'}">
+                ${item.label}
+              </button>
+            `).join('')}
+          </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="flex-grow">
+          ${pageContent}
+        </main>
+
+        <!-- Dark Forest-Green Footer (Inspired by Image 2) -->
+        <footer class="bg-forest-900 text-cream-200 mt-16">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 pb-8 border-b border-forest-800">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-copper-600 text-white flex items-center justify-center">
+                  <i data-lucide="scale" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <span class="font-editorial font-bold text-xl text-white">VERIDEX Rwanda</span>
+                  <p class="text-xs text-cream-300">Digital Legal Information & Justice Access Platform</p>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap gap-5 text-xs font-semibold text-cream-200">
+                <button onclick="navigateTo('home')" class="hover:text-copper-400 transition">Home</button>
+                <button onclick="navigateTo('lawyers')" class="hover:text-copper-400 transition">Advocates</button>
+                <button onclick="navigateTo('live-court')" class="hover:text-copper-400 transition">Live Court</button>
+                <button onclick="navigateTo('gazette')" class="hover:text-copper-400 transition">Gazette</button>
+                <button onclick="navigateTo('education')" class="hover:text-copper-400 transition">Legal Education</button>
+                <button onclick="navigateTo('courts')" class="hover:text-copper-400 transition">Court Records</button>
+              </div>
+            </div>
+
+            <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-cream-400">
+              <p>© 2026 VERIDEX Rwanda • Logged in as <strong class="text-white">${user.name}</strong> (${user.location})</p>
+              <p>Compliant with Rwanda Data Protection Law N° 058/2021 • Toll-Free Legal Aid: 3512</p>
+            </div>
+          </div>
+        </footer>
+      `;
+    }
+
+    function navigateTo(page) {
+      state.currentPage = page;
+      saveState();
+      renderApp();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleMobileMenu() {
+      document.getElementById('mobile-menu')?.classList.toggle('hidden');
+    }
+
+    function toggleNotifications() {
+      document.getElementById('notif-dropdown')?.classList.toggle('hidden');
+    }
+
+    function markAllNotificationsRead() {
+      state.notifications.forEach(n => n.unread = false);
+      saveState();
+      renderApp();
+    }
+
+    // -------------------------------------------------------------------------
+    // 6. INTERIOR PAGE 1: EDITORIAL HOME (Inspired by Image 2)
+    // -------------------------------------------------------------------------
+    function renderEditorialHomePage() {
+      const user = state.currentUser;
+      const roleHeadlines = {
+        customer: {
+          eyebrow: `PERSONALIZED CITIZEN PORTAL • ${user.location.toUpperCase()}`,
+          line1: 'Rwandan Law.',
+          line2: 'Clear & Accessible.',
+          desc: `Muraho ${user.name}. Connect with verified RBA advocates near ${user.location}, book face-to-face office consultations, and follow live public courtrooms.`,
+          ctaLabel: 'Explore Advocates Near You',
+          ctaTarget: 'lawyers'
+        },
+        lawyer: {
+          eyebrow: `VERIFIED ADVOCATE PRACTICE • ${user.location.toUpperCase()}`,
+          line1: 'Trusted Counsel.',
+          line2: 'Modern Chambers.',
+          desc: `Welcome back ${user.name}. Manage your face-to-face client consultations, review incoming legal briefs, and reference Official Gazette statutes.`,
+          ctaLabel: 'Manage Client Meetings',
+          ctaTarget: 'portal'
+        },
+        scholar: {
+          eyebrow: `LEGAL RESEARCH & ARCHIVE • ${user.location.toUpperCase()}`,
+          line1: 'Rwandan Statutes.',
+          line2: 'Indexed & Citable.',
+          desc: `Welcome ${user.name}. Search consolidated Official Gazette legislation, copy academic citations, and analyze final appellate conviction records.`,
+          ctaLabel: 'Open Statutory Archive',
+          ctaTarget: 'gazette'
+        }
+      };
+
+      const hero = roleHeadlines[user.role] || roleHeadlines.customer;
+      const featuredLawyers = state.lawyers.slice(0, 4);
+      const featuredGazettes = state.gazettes.slice(0, 4);
+
+      return `
+        <div class="page-reveal">
+          <!-- 1. DARK FOREST-GREEN & TERRACOTTA HERO BANNER (Inspired by Image 2) -->
+          <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+            <div class="editorial-hero-bg rounded-2xl p-8 sm:p-12 lg:p-16 text-cream-50 relative overflow-hidden shadow-lg">
+              <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                <div class="lg:col-span-7 space-y-5">
+                  <div class="flex items-center gap-3">
+                    <span class="w-8 h-[1.5px] bg-copper-500"></span>
+                    <span class="font-code text-[11px] font-semibold uppercase tracking-[0.2em] text-cream-300">
+                      ${hero.eyebrow}
+                    </span>
+                  </div>
+
+                  <h1 class="font-editorial font-bold text-4xl sm:text-5xl lg:text-[56px] leading-[1.06] tracking-tight">
+                    <span class="text-cream-50 block">${hero.line1}</span>
+                    <span class="text-copper-400 block">${hero.line2}</span>
+                  </h1>
+
+                  <p class="text-sm sm:text-base text-cream-200/85 max-w-lg leading-relaxed">
+                    ${hero.desc}
+                  </p>
+
+                  <div class="pt-2 flex flex-wrap items-center gap-3">
+                    <button onclick="navigateTo('${hero.ctaTarget}')" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-copper-600 hover:bg-copper-500 text-white font-semibold text-xs sm:text-sm transition shadow-md">
+                      <span>${hero.ctaLabel}</span>
+                      <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </button>
+                    <button onclick="navigateTo('live-court')" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white/10 hover:bg-white/15 text-cream-100 font-semibold text-xs sm:text-sm transition">
+                      <span class="w-2 h-2 rounded-full bg-red-500 live-dot"></span>
+                      <span>Watch Live Court</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Right Editorial Showcase Card with Handwritten Margin Script -->
+                <div class="lg:col-span-5 relative">
+                  <div class="hidden sm:block absolute -top-7 right-2 text-cream-300/80 font-script text-xl -rotate-6 select-none">
+                    Justice makes every citizen stronger ✧
+                  </div>
+
+                  <div class="bg-forest-950/75 border border-white/15 rounded-2xl p-6 backdrop-blur-sm space-y-4">
+                    <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                      <span class="inline-flex items-center gap-2 text-xs font-bold text-red-400">
+                        <span class="w-2 h-2 rounded-full bg-red-500 live-dot"></span> LIVE SUPREME COURT SESSION
+                      </span>
+                      <span class="font-code text-[11px] text-cream-300">1,428 Watching</span>
+                    </div>
+
+                    <div>
+                      <p class="font-code text-[11px] text-copper-400">RS/INCONST/SPEC 0003/26/SC</p>
+                      <h3 class="font-editorial font-bold text-lg text-white mt-1 leading-snug">
+                        Constitutional Review on Digital Evidence Admissibility in Civil Proceedings
+                      </h3>
+                      <p class="text-xs text-cream-300 mt-1.5">Kimihurura, Kigali • Full 5-Justice Bench</p>
+                    </div>
+
+                    <div class="pt-2 flex items-center justify-between">
+                      <span class="text-[11px] text-emerald-300 flex items-center gap-1">
+                        <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Public Broadcast Approved
+                      </span>
+                      <button onclick="navigateTo('live-court')" class="px-4 py-2 rounded-full bg-copper-600 hover:bg-copper-500 text-white text-xs font-bold transition">
+                        Join Stream →
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 2. 4-COLUMN VALUE PILLAR STRIP (Matching Image 2's 4-Icon Strip with Vertical Hairlines) -->
+          <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-cream-300 bg-cream-100">
+              <div onclick="navigateTo('lawyers')" class="cursor-pointer p-6 text-center space-y-2.5 group">
+                <div class="w-11 h-11 rounded-full bg-forest-100 text-forest-800 flex items-center justify-center mx-auto group-hover:scale-105 transition">
+                  <i data-lucide="user-check" class="w-5 h-5"></i>
+                </div>
+                <h3 class="font-editorial font-bold text-base text-forest-900">Verified Advocates</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">RBA-certified lawyers across Kigali and all provinces.</p>
+              </div>
+
+              <div onclick="navigateTo('lawyers')" class="cursor-pointer p-6 text-center space-y-2.5 group">
+                <div class="w-11 h-11 rounded-full bg-copper-100 text-copper-700 flex items-center justify-center mx-auto group-hover:scale-105 transition">
+                  <i data-lucide="calendar-check" class="w-5 h-5"></i>
+                </div>
+                <h3 class="font-editorial font-bold text-base text-forest-900">Face-to-Face Meetings</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">Book physical chamber consultations with instant slots.</p>
+              </div>
+
+              <div onclick="navigateTo('live-court')" class="cursor-pointer p-6 text-center space-y-2.5 group">
+                <div class="w-11 h-11 rounded-full bg-rose-100 text-rose-800 flex items-center justify-center mx-auto group-hover:scale-105 transition">
+                  <i data-lucide="video" class="w-5 h-5"></i>
+                </div>
+                <h3 class="font-editorial font-bold text-base text-forest-900">Live Court Streams</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">Watch authorized Supreme & High Court sessions live.</p>
+              </div>
+
+              <div onclick="navigateTo('gazette')" class="cursor-pointer p-6 text-center space-y-2.5 group">
+                <div class="w-11 h-11 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center mx-auto group-hover:scale-105 transition">
+                  <i data-lucide="book-open" class="w-5 h-5"></i>
+                </div>
+                <h3 class="font-editorial font-bold text-base text-forest-900">Official Gazette</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">Search, cite & download Rwanda’s consolidated laws.</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- 3. 4-COLUMN FEATURED ADVOCATES GRID ("Our Special Picks" Style from Image 2) -->
+          <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex items-end justify-between mb-7">
+              <div>
+                <div class="flex items-center gap-2.5">
+                  <span class="font-code text-[11px] font-bold uppercase tracking-[0.2em] text-copper-700">VERIFIED LEGAL COUNSEL</span>
+                  <span class="w-8 h-[1px] bg-copper-600"></span>
+                </div>
+                <h2 class="font-editorial font-bold text-3xl sm:text-4xl text-forest-900 mt-1">
+                  Our <span class="italic font-normal text-copper-700">Featured</span> Advocates
+                </h2>
+              </div>
+              <span class="hidden sm:block font-script text-xl text-slate-500 -rotate-3">Trusted across Rwanda ♡</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              ${featuredLawyers.map(lawyer => `
+                <div class="bg-white rounded-2xl p-3.5 border border-cream-300 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
+                  <div>
+                    <!-- Top Visual Portrait Block -->
+                    <div class="h-44 rounded-xl bg-gradient-to-br ${lawyer.cardTone} p-4 flex flex-col justify-between text-white relative overflow-hidden">
+                      <div class="flex items-center justify-between">
+                        <span class="px-2.5 py-0.5 rounded-full bg-white/15 backdrop-blur-sm font-code text-[10px] font-semibold">
+                          ${lawyer.rbaNumber}
+                        </span>
+                        <span class="text-[11px] text-cream-200">${lawyer.experience} Yrs Exp.</span>
+                      </div>
+
+                      <div class="my-auto flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-full bg-cream-100 text-forest-900 font-editorial font-bold text-lg flex items-center justify-center shrink-0">
+                          ${lawyer.initials}
+                        </div>
+                        <div class="min-w-0">
+                          <p class="text-[11px] text-copper-300 font-semibold truncate">${lawyer.district}</p>
+                          <p class="text-xs text-cream-100 line-clamp-2 leading-snug">${lawyer.specialization}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Title & Subtitle -->
+                    <div class="pt-3.5 px-1">
+                      <h3 class="font-editorial font-bold text-lg text-forest-900 leading-snug">${lawyer.name}</h3>
+                      <p class="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">${lawyer.officeAddress}</p>
+                    </div>
+                  </div>
+
+                  <!-- Bottom Fee + Circular Copper Arrow Button (Exact Image 2 Card Footer) -->
+                  <div class="pt-4 px-1 pb-1 flex items-center justify-between">
+                    <span class="font-sans font-extrabold text-sm text-forest-900">${lawyer.feeShort}</span>
+                    <button onclick="openBookingModal('${lawyer.id}')" title="Book Consultation" class="w-8 h-8 rounded-full bg-copper-600 hover:bg-forest-900 text-white flex items-center justify-center transition shadow-sm">
+                      <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+
+          <!-- 4. 4-COLUMN OFFICIAL GAZETTE GRID -->
+          <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="flex items-end justify-between mb-7">
+              <div>
+                <div class="flex items-center gap-2.5">
+                  <span class="font-code text-[11px] font-bold uppercase tracking-[0.2em] text-copper-700">STATUTORY ARCHIVE</span>
+                  <span class="w-8 h-[1px] bg-copper-600"></span>
+                </div>
+                <h2 class="font-editorial font-bold text-3xl sm:text-4xl text-forest-900 mt-1">
+                  Essential <span class="italic font-normal text-copper-700">Rwandan</span> Laws
+                </h2>
+              </div>
+              <button onclick="navigateTo('gazette')" class="text-xs font-bold text-copper-700 hover:text-forest-900 underline">
+                View All Gazette Laws →
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              ${featuredGazettes.map(law => `
+                <div class="bg-white rounded-2xl p-4 border border-cream-300 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+                  <div>
+                    <div class="flex items-center justify-between gap-2 mb-3">
+                      <span class="px-2.5 py-1 rounded-full bg-cream-200 text-forest-900 font-code text-[10px] font-bold">${law.category}</span>
+                      <span class="font-code text-[11px] text-slate-400">${law.year}</span>
+                    </div>
+                    <h3 class="font-editorial font-bold text-lg text-forest-900 leading-snug line-clamp-2">${law.title}</h3>
+                    <p class="text-xs text-slate-600 mt-2 line-clamp-3 leading-relaxed">${law.summary}</p>
+                  </div>
+
+                  <div class="pt-4 mt-4 border-t border-cream-200 flex items-center justify-between">
+                    <span class="font-code font-bold text-xs text-forest-900">${law.lawCode}</span>
+                    <button onclick="openGazetteReader('${law.id}')" title="Read Statute" class="w-8 h-8 rounded-full bg-copper-600 hover:bg-forest-900 text-white flex items-center justify-center transition">
+                      <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+
+          <!-- 5. ASYMMETRIC SPLIT EDITORIAL STORY BLOCK ("More Than Just Coffee" Layout from Image 2) -->
+          <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="bg-cream-200/70 rounded-3xl p-6 sm:p-10 lg:p-12 border border-cream-300">
+              <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <!-- Left Visual Showcase with Dark Forest Organic Corner Badge -->
+                <div class="lg:col-span-5 relative rounded-2xl overflow-hidden bg-forest-900 text-cream-50 p-8 min-h-[280px] flex flex-col justify-between">
+                  <div class="space-y-2">
+                    <span class="font-code text-xs uppercase tracking-widest text-copper-400">Kigali & 30 Districts</span>
+                    <h3 class="font-editorial font-bold text-2xl leading-snug">
+                      Bridging Citizens, Advocates & Courts Across Rwanda.
+                    </h3>
+                  </div>
+
+                  <div class="grid grid-cols-2 gap-3 my-6">
+                    <div class="p-3 rounded-xl bg-white/10">
+                      <p class="font-editorial font-bold text-2xl text-gold-400">100%</p>
+                      <p class="text-[11px] text-cream-200">RBA Verified Roll</p>
+                    </div>
+                    <div class="p-3 rounded-xl bg-white/10">
+                      <p class="font-editorial font-bold text-2xl text-copper-400">3512</p>
+                      <p class="text-[11px] text-cream-200">Legal Aid Helpline</p>
+                    </div>
+                  </div>
+
+                  <!-- Organic Corner Script Accent matching Image 2 bottom-left badge -->
+                  <div class="inline-block bg-forest-950/90 px-4 py-2 rounded-tr-2xl rounded-bl-xl border border-white/10 self-start">
+                    <p class="font-script text-lg text-cream-200 leading-none">Equal Justice • Transparent Law</p>
+                  </div>
+                </div>
+
+                <!-- Right Editorial Narrative + Vertical Feature List -->
+                <div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                  <div class="md:col-span-7 space-y-4">
+                    <div class="flex items-center gap-2">
+                      <span class="font-code text-[11px] font-bold uppercase tracking-[0.2em] text-copper-700">OUR MISSION</span>
+                      <span class="w-8 h-[1px] bg-copper-600"></span>
+                    </div>
+                    <h2 class="font-editorial font-bold text-3xl sm:text-4xl text-forest-900 leading-tight">
+                      More Than Just A Legal Directory
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                      At VERIDEX, we believe legal knowledge and representation should be clear, dignified, and accessible to every Rwandan—whether you are verifying a land title in Musanze, scheduling an office consultation in Kigali, or citing statutes for academic research.
+                    </p>
+                    <div class="pt-1">
+                      <button onclick="navigateTo('education')" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-forest-900 hover:bg-forest-800 text-cream-50 text-xs font-semibold transition">
+                        <span>Explore Legal Education</span>
+                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Vertical Icon List (Exact Right-Edge Feature List from Image 2) -->
+                  <div class="md:col-span-5 md:border-l md:border-cream-300 md:pl-6 space-y-5">
+                    <div class="flex items-start gap-3">
+                      <div class="w-8 h-8 rounded-full bg-white border border-cream-300 flex items-center justify-center text-copper-700 shrink-0">
+                        <i data-lucide="shield-check" class="w-4 h-4"></i>
+                      </div>
+                      <div>
+                        <p class="font-bold text-xs text-forest-900">Verified RBA Roll</p>
+                        <p class="text-[11px] text-slate-500">Every advocate credential checked</p>
+                      </div>
+                    </div>
+
+                    <div class="flex items-start gap-3">
+                      <div class="w-8 h-8 rounded-full bg-white border border-cream-300 flex items-center justify-center text-forest-800 shrink-0">
+                        <i data-lucide="lock" class="w-4 h-4"></i>
+                      </div>
+                      <div>
+                        <p class="font-bold text-xs text-forest-900">Law N° 058/2021</p>
+                        <p class="text-[11px] text-slate-500">Strict data & privacy protection</p>
+                      </div>
+                    </div>
+
+                    <div class="flex items-start gap-3">
+                      <div class="w-8 h-8 rounded-full bg-white border border-cream-300 flex items-center justify-center text-rose-700 shrink-0">
+                        <i data-lucide="heart-handshake" class="w-4 h-4"></i>
+                      </div>
+                      <div>
+                        <p class="font-bold text-xs text-forest-900">A Place for Everyone</p>
+                        <p class="text-[11px] text-slate-500">Citizens, advocates & scholars</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      `;
+    }
+
+    // -------------------------------------------------------------------------
+    // 7. INTERIOR PAGE 2: LAWYERS & FACE-TO-FACE LEGAL MEETINGS
+    // -------------------------------------------------------------------------
+    function renderLawyersPage() {
+      const user = state.currentUser;
+      return `
+        <div class="page-reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-cream-300">
+            <div>
+              <span class="font-code text-xs font-bold uppercase tracking-widest text-copper-700">Rwanda Bar Association Directory</span>
+              <h1 class="font-editorial font-bold text-3xl sm:text-4xl text-forest-900 mt-1">Verified Advocates & Face-to-Face Meetings</h1>
+              <p class="text-sm text-slate-600 mt-1">Showing advocates available for physical chamber visits and consultations across Rwanda (Your Location: <strong>${user.location}</strong>).</p>
+            </div>
+            <button onclick="navigateTo('portal')" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-forest-900 text-cream-50 text-xs font-semibold hover:bg-forest-800 transition self-start">
+              <i data-lucide="calendar" class="w-4 h-4 text-copper-400"></i>
+              My Appointments (${state.appointments.length})
+            </button>
+          </div>
+
+          <!-- Search & Filter Bar -->
+          <div class="bg-white rounded-2xl p-4 border border-cream-300 mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div class="relative">
+              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3"></i>
+              <input id="lawyer-search" oninput="filterLawyers()" type="text" placeholder="Advocate name, RBA ID, keyword..." class="w-full pl-10 pr-3 py-2 rounded-xl border border-cream-300 bg-cream-50 text-sm focus:outline-none focus:border-forest-900" />
+            </div>
+            <select id="lawyer-spec-filter" onchange="filterLawyers()" class="px-3.5 py-2 rounded-xl border border-cream-300 text-sm text-forest-900 bg-cream-50">
+              <option value="ALL">All Legal Specializations</option>
+              <option value="Commercial & Corporate Law">Commercial & Corporate Law</option>
+              <option value="Family & Succession Law">Family & Succession Law</option>
+              <option value="Criminal Law">Criminal Law</option>
+              <option value="Land & Property Law">Land & Property Law</option>
+              <option value="Labor & Employment Law">Labor & Employment Law</option>
+              <option value="Constitutional & Public Law">Constitutional & Public Law</option>
+            </select>
+            <select id="lawyer-district-filter" onchange="filterLawyers()" class="px-3.5 py-2 rounded-xl border border-cream-300 text-sm text-forest-900 bg-cream-50">
+              <option value="ALL">All Districts & Cities</option>
+              <option value="Gasabo">Kigali – Gasabo</option>
+              <option value="Nyarugenge">Kigali – Nyarugenge</option>
+              <option value="Kicukiro">Kigali – Kicukiro</option>
+              <option value="Musanze">Musanze</option>
+              <option value="Huye">Huye</option>
+              <option value="Rubavu">Rubavu</option>
+            </select>
+            <label class="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-xl border border-cream-300 bg-cream-50 text-sm font-medium text-forest-900 cursor-pointer">
+              <input id="lawyer-verified-only" onchange="filterLawyers()" type="checkbox" class="rounded text-forest-900" />
+              <span>RBA Verified Only</span>
+            </label>
+          </div>
+
+          <div id="lawyers-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            ${renderLawyerCards(state.lawyers)}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderLawyerCards(list) {
+      if (list.length === 0) {
+        return `<div class="col-span-full bg-white rounded-2xl p-10 text-center border border-cream-300 text-slate-500 text-sm">No advocates match your filter criteria.</div>`;
+      }
+
+      return list.map(lawyer => `
+        <div class="bg-white rounded-2xl border border-cream-300 hover:border-copper-600 transition overflow-hidden flex flex-col justify-between shadow-sm">
+          <div class="p-6">
+            <div class="flex items-start gap-4">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br ${lawyer.cardTone} text-cream-50 font-editorial font-bold text-xl flex items-center justify-center shrink-0">
+                ${lawyer.initials}
+              </div>
+              <div class="min-w-0 flex-grow">
+                <div class="flex flex-wrap items-center gap-2">
+                  <h3 class="font-editorial font-bold text-xl text-forest-900">${lawyer.name}</h3>
+                  ${lawyer.verified
+                    ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-code text-[10px] font-bold bg-forest-100 text-forest-800"><i data-lucide="badge-check" class="w-3 h-3"></i> ${lawyer.rbaNumber}</span>`
+                    : `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-code text-[10px] font-bold bg-copper-100 text-copper-700"><i data-lucide="clock" class="w-3 h-3"></i> Pending RBA</span>`
+                  }
+                </div>
+                <p class="text-xs font-bold text-copper-700 mt-0.5">${lawyer.specialization} • ${lawyer.experience} Years Experience</p>
+                <p class="text-xs text-slate-500 mt-0.5">${lawyer.qualifications}</p>
+              </div>
+            </div>
+
+            <p class="text-sm text-slate-600 mt-4 leading-relaxed">${lawyer.bio}</p>
+
+            <div class="mt-4 p-4 rounded-xl bg-cream-100 border border-cream-300 space-y-2 text-xs">
+              <div class="flex items-start gap-2 text-forest-900">
+                <i data-lucide="map-pin" class="w-4 h-4 text-copper-700 shrink-0 mt-0.5"></i>
+                <span><strong>Office (${lawyer.district}):</strong> ${lawyer.officeAddress}</span>
+              </div>
+              <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-cream-300">
+                <span>Consultation Fee: <strong class="font-code text-forest-900">${lawyer.fee}</strong></span>
+                <span class="font-code text-[11px] text-slate-700">${lawyer.phone}</span>
+              </div>
+            </div>
+
+            <div class="mt-4">
+              <p class="font-code text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Available Face-to-Face Office Slots</p>
+              <div class="flex flex-wrap gap-1.5">
+                ${lawyer.availability.map(slot => `
+                  <button onclick="openBookingModal('${lawyer.id}', '${slot}')" class="px-3 py-1 rounded-full font-code text-[11px] font-semibold bg-cream-200 hover:bg-forest-900 text-forest-900 hover:text-cream-50 transition">
+                    ${slot}
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+
+          <div class="px-6 py-4 bg-cream-100 border-t border-cream-300 flex flex-wrap items-center justify-between gap-2">
+            <button onclick="openMessageModal('${lawyer.id}')" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-cream-300 bg-white hover:bg-cream-200 text-forest-900 text-xs font-semibold transition">
+              <i data-lucide="message-square" class="w-3.5 h-3.5"></i> Message
+            </button>
+            <button onclick="openBookingModal('${lawyer.id}')" class="inline-flex items-center gap-1.5 px-5 py-2 rounded-full bg-copper-600 hover:bg-forest-900 text-white text-xs font-semibold transition">
+              <i data-lucide="calendar-plus" class="w-3.5 h-3.5"></i> Book Face-to-Face Meeting
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterLawyers() {
+      const q = (document.getElementById('lawyer-search')?.value || '').toLowerCase();
+      const spec = document.getElementById('lawyer-spec-filter')?.value || 'ALL';
+      const dist = document.getElementById('lawyer-district-filter')?.value || 'ALL';
+      const verifiedOnly = document.getElementById('lawyer-verified-only')?.checked || false;
+
+      const filtered = state.lawyers.filter(l => {
+        const matchesQ = l.name.toLowerCase().includes(q) || l.specialization.toLowerCase().includes(q) || l.district.toLowerCase().includes(q) || l.rbaNumber.toLowerCase().includes(q);
+        const matchesSpec = spec === 'ALL' || l.specialization === spec;
+        const matchesDist = dist === 'ALL' || l.district.includes(dist);
+        const matchesVer = !verifiedOnly || l.verified;
+        return matchesQ && matchesSpec && matchesDist && matchesVer;
+      });
+
+      const grid = document.getElementById('lawyers-grid');
+      if (grid) {
+        grid.innerHTML = renderLawyerCards(filtered);
+        lucide.createIcons();
+      }
+    }
+
+    function openBookingModal(lawyerId, preselectedSlot = '') {
+      const lawyer = state.lawyers.find(l => l.id === lawyerId);
+      if (!lawyer) return;
+
+      openModal(`
+        <div class="bg-forest-900 text-cream-50 px-6 py-4 flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="calendar-check" class="w-5 h-5 text-copper-400"></i>
+            <h3 class="font-editorial font-bold text-lg">Schedule Legal Consultation</h3>
+          </div>
+          <button onclick="closeModal()" class="text-cream-300 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <form onsubmit="submitBooking(event, '${lawyer.id}')" class="p-6 space-y-4">
+          <div class="p-4 rounded-xl bg-white border border-cream-300">
+            <p class="font-editorial font-bold text-forest-900 text-base">${lawyer.name}</p>
+            <p class="text-xs text-slate-600">${lawyer.specialization} • Fee: <strong class="font-code">${lawyer.fee}</strong></p>
+            <p class="text-xs text-slate-500 mt-1 flex items-center gap-1"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-copper-700"></i> ${lawyer.officeAddress}</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-forest-900 mb-1">Meeting Format</label>
+              <select id="book-type" required class="w-full px-3.5 py-2.5 rounded-xl border border-cream-300 bg-white text-sm">
+                <option value="Face-to-Face at Office">Face-to-Face at Advocate's Office</option>
+                <option value="Secure Video Consultation">Secure Video Consultation</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-forest-900 mb-1">Preferred Date</label>
+              <input id="book-date" type="date" required value="2026-11-19" min="2026-11-15" class="w-full px-3.5 py-2.5 rounded-xl border border-cream-300 bg-white text-sm" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-forest-900 mb-1">Available Time Slot</label>
+              <select id="book-slot" required class="w-full px-3.5 py-2.5 rounded-xl border border-cream-300 bg-white text-sm">
+                ${lawyer.availability.map(s => `<option value="${s}" ${s === preselectedSlot ? 'selected' : ''}>${s}</option>`).join('')}
+                <option value="16:00 PM">16:00 PM (Late Afternoon)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-forest-900 mb-1">Your Contact Phone</label>
+              <input id="book-phone" type="tel" required value="${state.currentUser.phone}" class="w-full px-3.5 py-2.5 rounded-xl border border-cream-300 bg-white text-sm" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-forest-900 mb-1">Your Full Name</label>
+            <input id="book-name" type="text" required value="${state.currentUser.name}" class="w-full px-3.5 py-2.5 rounded-xl border border-cream-300 bg-white text-sm" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-forest-900 mb-1">Confidential Summary of Legal Matter</label>
+            <textarea id="book-topic" rows="3" required placeholder="Describe your legal question, land matter, or contract..." class="w-full px-3.5 py-2.5 rounded-xl border border-cream-300 bg-white text-sm"></textarea>
+          </div>
+
+          <div class="flex items-center justify-end gap-3 pt-2 border-t border-cream-300">
+            <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-full border border-cream-300 bg-white text-xs font-semibold">Cancel</button>
+            <button type="submit" class="px-5 py-2.5 rounded-full bg-copper-600 hover:bg-forest-900 text-white text-xs font-semibold">Confirm Booking Request</button>
+          </div>
+        </form>
+      `);
+    }
+
+    function submitBooking(e, lawyerId) {
+      e.preventDefault();
+      const lawyer = state.lawyers.find(l => l.id === lawyerId);
+      const newApt = {
+        id: 'APT-2026-' + Math.floor(100 + Math.random() * 900),
+        clientName: document.getElementById('book-name').value.trim(),
+        clientEmail: state.currentUser.email,
+        clientPhone: document.getElementById('book-phone').value.trim(),
+        lawyerId: lawyer.id,
+        lawyerName: lawyer.name,
+        officeAddress: lawyer.officeAddress,
+        meetingType: document.getElementById('book-type').value,
+        date: document.getElementById('book-date').value,
+        timeSlot: document.getElementById('book-slot').value,
+        topic: document.getElementById('book-topic').value.trim(),
+        status: 'Pending Lawyer Approval',
+        createdAt: '2026-11-15'
+      };
+
+      state.appointments.unshift(newApt);
+      pushNotification(
+        'Consultation Request Sent',
+        `${newApt.meetingType} with ${lawyer.name} on ${newApt.date} (${newApt.timeSlot}) is awaiting approval.`
+      );
+      saveState();
+
+      openModal(`
+        <div class="p-6 text-center space-y-4">
+          <div class="w-12 h-12 rounded-full bg-forest-100 text-forest-800 flex items-center justify-center mx-auto">
+            <i data-lucide="check-circle-2" class="w-7 h-7"></i>
+          </div>
+          <h3 class="font-editorial font-bold text-2xl text-forest-900">Appointment Request Confirmed</h3>
+          <p class="text-sm text-slate-600 max-w-md mx-auto">
+            Reference <strong class="font-code">${newApt.id}</strong> has been transmitted to <strong>${lawyer.name}</strong>.
+          </p>
+          <div class="p-4 rounded-xl bg-white border border-cream-300 text-left text-xs space-y-1.5 max-w-md mx-auto">
+            <p><strong>Format:</strong> ${newApt.meetingType}</p>
+            <p><strong>Date & Time:</strong> ${newApt.date} at ${newApt.timeSlot}</p>
+            <p><strong>Office Location:</strong> ${lawyer.officeAddress}</p>
+            <p><strong>Status:</strong> <span class="text-copper-700 font-bold">${newApt.status}</span></p>
+          </div>
+          <div class="flex justify-center gap-3 pt-2">
+            <button onclick="closeModal()" class="px-4 py-2 rounded-full border border-cream-300 bg-white text-xs font-semibold">Close</button>
+            <button onclick="closeModal(); navigateTo('portal')" class="px-5 py-2.5 rounded-full bg-forest-900 text-cream-50 text-xs font-semibold">Open My Portal</button>
+          </div>
+        </div>
+      `);
+      showToast('Face-to-face consultation request booked!');
+    }
+
+    function openMessageModal(lawyerId) {
+      const lawyer = state.lawyers.find(l => l.id === lawyerId);
+      openModal(`
+        <div class="bg-forest-900 text-cream-50 px-6 py-4 flex items-center justify-between">
+          <h3 class="font-editorial font-bold text-base">Direct Message to ${lawyer.name}</h3>
+          <button onclick="closeModal()" class="text-cream-300 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <form onsubmit="submitDirectMessage(event, '${lawyer.id}')" class="p-6 space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-forest-900 mb-1">Subject</label>
+            <input id="msg-subject" type="text" required placeholder="e.g., Consultation Fee & Document Checklist Inquiry" class="w-full px-3.5 py-2.5 rounded-xl border border-cream-300 bg-white text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-forest-900 mb-1">Message</label>
+            <textarea id="msg-body" rows="4" required placeholder="Write your message to ${lawyer.name}..." class="w-full px-3.5 py-2.5 rounded-xl border border-cream-300 bg-white text-sm"></textarea>
+          </div>
+          <div class="flex justify-end gap-3">
+            <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-full border border-cream-300 bg-white text-xs font-semibold">Cancel</button>
+            <button type="submit" class="px-5 py-2.5 rounded-full bg-copper-600 text-white text-xs font-semibold">Send Message</button>
+          </div>
+        </form>
+      `);
+    }
+
+    function submitDirectMessage(e, lawyerId) {
+      e.preventDefault();
+      const lawyer = state.lawyers.find(l => l.id === lawyerId);
+      state.messages.unshift({
+        id: 'MSG-' + Date.now(),
+        from: state.currentUser.name,
+        to: lawyer.name,
+        subject: document.getElementById('msg-subject').value.trim(),
+        body: document.getElementById('msg-body').value.trim(),
+        timestamp: 'Just now',
+        unread: false
+      });
+      saveState();
+      closeModal();
+      showToast(`Inquiry sent to ${lawyer.name}.`);
+    }
+
+    // -------------------------------------------------------------------------
+    // 8. INTERIOR PAGE 3: LIVE COURT STREAMING
+    // -------------------------------------------------------------------------
+    function renderLiveCourtPage() {
+      const activeStream = state.streams.find(s => s.id === state.activeStreamId) || state.streams[0];
+      const filteredStreams = state.streamFilter === 'ALL'
+        ? state.streams
+        : state.streams.filter(s => s.status === state.streamFilter);
+
+      return `
+        <div class="page-reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-6 border-b border-cream-300">
+            <div>
+              <div class="inline-flex items-center gap-2 font-code text-xs font-bold uppercase tracking-widest text-red-700">
+                <span class="w-2 h-2 rounded-full bg-red-600 live-dot"></span> Judiciary Public Broadcast Center
+              </div>
+              <h1 class="font-editorial font-bold text-3xl sm:text-4xl text-forest-900 mt-1">Authorized Live Court Proceedings</h1>
+              <p class="text-sm text-slate-600 mt-1">Watch publicly broadcast hearings approved under Rwandan judicial transparency rules.</p>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-white border border-cream-300 text-xs text-forest-900 max-w-md flex items-start gap-2.5">
+              <i data-lucide="shield-alert" class="w-4 h-4 text-copper-700 shrink-0 mt-0.5"></i>
+              <span><strong>Judicial Confidentiality Rule:</strong> Juvenile proceedings, sexual offences, and protected witness testimonies are strictly excluded from public broadcast.</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
+            <div class="lg:col-span-8 space-y-4">
+              <!-- Broadcast Screen -->
+              <div class="relative rounded-2xl overflow-hidden bg-forest-950 border border-forest-800 aspect-video flex flex-col justify-between p-5 sm:p-7 text-cream-50 shadow-lg">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <div class="flex items-center gap-2">
+                    ${activeStream.status === 'LIVE'
+                      ? `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-600 text-white font-code text-xs font-bold"><span class="w-2 h-2 rounded-full bg-white live-dot"></span> LIVE FEED</span>`
+                      : `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-copper-600 text-white font-code text-xs font-bold">${activeStream.status}</span>`
+                    }
+                    <span class="px-3 py-1 rounded-full bg-white/10 font-code text-xs text-cream-200">
+                      ${activeStream.caseNumber}
+                    </span>
+                  </div>
+                  <span class="px-3 py-1 rounded-full bg-white/10 font-code text-xs text-cream-200 flex items-center gap-1.5">
+                    <i data-lucide="eye" class="w-3.5 h-3.5 text-copper-400"></i> ${activeStream.viewers.toLocaleString()} Watching
+                  </span>
+                </div>
+
+                <div class="my-auto text-center space-y-3 max-w-xl mx-auto">
+                  <div class="w-14 h-14 rounded-2xl bg-white/10 border border-copper-400/40 flex items-center justify-center mx-auto text-copper-400">
+                    <i data-lucide="landmark" class="w-7 h-7"></i>
+                  </div>
+                  <p class="font-code text-xs font-bold uppercase tracking-widest text-copper-400">${activeStream.court}</p>
+                  <h2 class="font-editorial text-xl sm:text-2xl font-bold text-white leading-snug">${activeStream.caseTitle}</h2>
+                  <p class="text-xs text-cream-300">${activeStream.bench}</p>
+
+                  ${activeStream.status === 'LIVE' ? `
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-xs text-emerald-300 mt-2">
+                      <div class="flex items-end gap-0.5 h-4">
+                        <span class="w-1 bg-emerald-400 rounded eq-bar"></span>
+                        <span class="w-1 bg-emerald-400 rounded eq-bar"></span>
+                        <span class="w-1 bg-emerald-400 rounded eq-bar"></span>
+                        <span class="w-1 bg-emerald-400 rounded eq-bar"></span>
+                      </div>
+                      <span>Official Courtroom Audio Feed Active (Kinyarwanda / English)</span>
+                    </div>
+                  ` : ''}
+                </div>
+
+                <div class="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-white/15 text-xs text-cream-300">
+                  <span><i data-lucide="map-pin" class="w-3.5 h-3.5 inline text-copper-400"></i> ${activeStream.location}</span>
+                  <span class="font-code text-[11px]">${activeStream.dateTime}</span>
+                </div>
+              </div>
+
+              <!-- Case Summary & Transcript -->
+              <div class="bg-white rounded-2xl p-6 border border-cream-300 space-y-4">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <div>
+                    <span class="font-code text-[11px] font-bold text-forest-800 bg-forest-100 px-3 py-1 rounded-full">
+                      ✓ ${activeStream.authorizedBy}
+                    </span>
+                    <h3 class="font-editorial font-bold text-xl text-forest-900 mt-2">Proceeding Summary & Public Docket</h3>
+                  </div>
+                  <button onclick="downloadCaseSummary('${activeStream.id}')" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-forest-900 text-cream-50 text-xs font-semibold hover:bg-forest-800 transition">
+                    <i data-lucide="download" class="w-3.5 h-3.5 text-copper-400"></i> Download Docket Notice
+                  </button>
+                </div>
+                <p class="text-sm text-slate-600 leading-relaxed">${activeStream.summary}</p>
+
+                <div class="border-t border-cream-200 pt-4">
+                  <h4 class="font-code text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-1.5">
+                    <i data-lucide="subtitles" class="w-4 h-4 text-forest-900"></i> Official Courtroom Clerk Log
+                  </h4>
+                  ${activeStream.transcript.length > 0 ? `
+                    <div class="space-y-2.5 max-h-48 overflow-y-auto pr-2">
+                      ${activeStream.transcript.map(line => `
+                        <div class="p-3 rounded-xl bg-cream-100 border border-cream-300 text-xs">
+                          <span class="font-code font-bold text-forest-900">[${line.time}] ${line.speaker}:</span>
+                          <span class="text-slate-700 ml-1">${line.text}</span>
+                        </div>
+                      `).join('')}
+                    </div>
+                  ` : `
+                    <p class="text-xs text-slate-500 italic">Clerk transcript will populate automatically once the scheduled session commences.</p>
+                  `}
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Schedule -->
+            <div class="lg:col-span-4 space-y-4">
+              <div class="bg-white rounded-2xl p-5 border border-cream-300">
+                <h3 class="font-editorial font-bold text-forest-900 text-lg mb-3">Broadcast Schedule</h3>
+                <div class="flex flex-wrap gap-1.5 mb-4">
+                  ${['ALL', 'LIVE', 'UPCOMING', 'RECORDED'].map(tab => `
+                    <button onclick="setStreamFilter('${tab}')" class="px-3 py-1 rounded-full font-code text-[11px] font-bold transition ${state.streamFilter === tab ? 'bg-forest-900 text-cream-50' : 'bg-cream-200 text-forest-900 hover:bg-cream-300'}">
+                      ${tab}
+                    </button>
+                  `).join('')}
+                </div>
+
+                <div class="space-y-3">
+                  ${filteredStreams.map(stream => {
+                    const isSelected = stream.id === activeStream.id;
+                    const hasReminder = state.hearingReminders.includes(stream.id);
+                    return `
+                      <div onclick="selectStream('${stream.id}')" class="cursor-pointer p-3.5 rounded-xl border transition ${isSelected ? 'border-copper-600 bg-copper-50' : 'border-cream-300 hover:border-forest-700 bg-white'}">
+                        <div class="flex items-center justify-between gap-2 mb-1">
+                          <span class="font-code text-[10px] font-bold px-2.5 py-0.5 rounded-full ${stream.status === 'LIVE' ? 'bg-red-100 text-red-700' : (stream.status === 'UPCOMING' ? 'bg-copper-100 text-copper-700' : 'bg-cream-200 text-forest-900')}">
+                            ${stream.status}
+                          </span>
+                          <span class="font-code text-[10px] text-slate-500">${stream.caseNumber}</span>
+                        </div>
+                        <p class="font-bold text-xs text-forest-900 line-clamp-2 mt-1">${stream.caseTitle}</p>
+                        <p class="text-[11px] text-slate-500 mt-1">${stream.court} • ${stream.dateTime}</p>
+                        ${stream.status === 'UPCOMING' ? `
+                          <button onclick="event.stopPropagation(); toggleHearingReminder('${stream.id}')" class="mt-2 inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-semibold ${hasReminder ? 'bg-forest-100 text-forest-800' : 'bg-cream-200 text-forest-900 hover:bg-cream-300'}">
+                            <i data-lucide="${hasReminder ? 'bell-ring' : 'bell-plus'}" class="w-3 h-3"></i>
+                            ${hasReminder ? 'Reminder Set' : 'Remind Me'}
+                          </button>
+                        ` : ''}
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function selectStream(streamId) {
+      state.activeStreamId = streamId;
+      saveState();
+      renderApp();
+    }
+
+    function setStreamFilter(filter) {
+      state.streamFilter = filter;
+      saveState();
+      renderApp();
+    }
+
+    function toggleHearingReminder(streamId) {
+      const idx = state.hearingReminders.indexOf(streamId);
+      const stream = state.streams.find(s => s.id === streamId);
+      if (idx === -1) {
+        state.hearingReminders.push(streamId);
+        pushNotification('Hearing Reminder Set', `You will be alerted before ${stream.caseNumber} begins.`);
+        showToast('Hearing reminder enabled.');
+      } else {
+        state.hearingReminders.splice(idx, 1);
+        showToast('Hearing reminder removed.', 'info');
+      }
+      saveState();
+      renderApp();
+    }
+
+    function downloadCaseSummary(streamId) {
+      const s = state.streams.find(x => x.id === streamId);
+      const content = `VERIDEX RWANDA - AUTHORIZED PUBLIC COURT DOCKET\n=================================================\nCourt: ${s.court}\nLocation: ${s.location}\nCase Reference: ${s.caseNumber}\nTitle: ${s.caseTitle}\nBench: ${s.bench}\nSchedule: ${s.dateTime}\nAuthorization: ${s.authorizedBy}\n\nSummary:\n${s.summary}`;
+      triggerTextDownload(`${s.caseNumber.replace(/\//g, '_')}_Docket.txt`, content);
+    }
+
+    // -------------------------------------------------------------------------
+    // 9. INTERIOR PAGE 4: RWANDA GAZETTE & LEGAL LIBRARY
+    // -------------------------------------------------------------------------
+    function renderGazettePage() {
+      return `
+        <div class="page-reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          <div class="pb-6 border-b border-cream-300 flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+              <span class="font-code text-xs font-bold uppercase tracking-widest text-copper-700">Official Legislation & Research Repository</span>
+              <h1 class="font-editorial font-bold text-3xl sm:text-4xl text-forest-900 mt-1">Rwanda Official Gazette & Legal Library</h1>
+              <p class="text-sm text-slate-600 mt-1">Search, filter, read, cite, and download consolidated Rwandan laws and constitutional decrees.</p>
+            </div>
+            ${state.currentUser.role === 'scholar' ? `
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-forest-900 text-gold-400 font-code text-xs font-semibold">
+                <i data-lucide="graduation-cap" class="w-4 h-4"></i> Scholar Citation Mode Active
+              </span>
+            ` : ''}
+          </div>
+
+          <div class="bg-white rounded-2xl p-4 border border-cream-300 mt-6 flex flex-col md:flex-row gap-3">
+            <div class="relative flex-grow">
+              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3"></i>
+              <input id="gazette-search" oninput="filterGazettes()" type="text" placeholder="Search by law number (e.g., 68/2018), title, or keyword..." class="w-full pl-10 pr-3 py-2 rounded-xl border border-cream-300 bg-cream-50 text-sm focus:outline-none focus:border-forest-900" />
+            </div>
+            <select id="gazette-cat-filter" onchange="filterGazettes()" class="px-3.5 py-2 rounded-xl border border-cream-300 text-sm text-forest-900 bg-cream-50">
+              <option value="ALL">All Categories</option>
+              <option value="Constitutional">Constitutional</option>
+              <option value="Criminal Law">Criminal Law</option>
+              <option value="Land & Property">Land & Property</option>
+              <option value="Labor & Employment">Labor & Employment</option>
+              <option value="Family & Succession">Family & Succession</option>
+              <option value="Digital & Privacy">Digital & Privacy</option>
+            </select>
+            <select id="gazette-year-filter" onchange="filterGazettes()" class="px-3.5 py-2 rounded-xl border border-cream-300 text-sm text-forest-900 bg-cream-50">
+              <option value="ALL">All Years</option>
+              <option value="2021">2021</option>
+              <option value="2018">2018</option>
+              <option value="2016">2016</option>
+              <option value="2015">2015</option>
+            </select>
+          </div>
+
+          <div id="gazette-list" class="space-y-4 mt-6">
+            ${renderGazetteCards(state.gazettes)}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderGazetteCards(list) {
+      if (list.length === 0) {
+        return `<div class="bg-white rounded-2xl p-10 text-center border border-cream-300 text-slate-500 text-sm">No matching Gazette laws found.</div>`;
+      }
+
+      return list.map(law => {
+        const isBookmarked = state.bookmarkedLaws.includes(law.id);
+        return `
+          <div class="bg-white rounded-2xl p-6 border border-cream-300 hover:border-copper-600 transition shadow-sm">
+            <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
+              <div class="space-y-2 max-w-3xl">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="px-3 py-0.5 rounded-full bg-forest-900 text-cream-50 font-code text-xs font-bold">${law.fullCode}</span>
+                  <span class="px-3 py-0.5 rounded-full bg-cream-200 text-forest-900 text-xs font-semibold">${law.category}</span>
+                  <span class="px-3 py-0.5 rounded-full bg-forest-100 text-forest-800 text-xs font-semibold">${law.status}</span>
+                </div>
+                <h3 class="font-editorial font-bold text-xl text-forest-900">${law.title}</h3>
+                <p class="font-code text-xs text-slate-500">${law.number}</p>
+                <p class="text-sm text-slate-600 leading-relaxed pt-1">${law.summary}</p>
+              </div>
+
+              <div class="flex flex-wrap lg:flex-col gap-2 shrink-0">
+                <button onclick="openGazetteReader('${law.id}')" class="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-full bg-copper-600 hover:bg-forest-900 text-white text-xs font-semibold transition">
+                  <i data-lucide="book-open" class="w-4 h-4"></i> Read & Cite
+                </button>
+                <button onclick="downloadGazetteLaw('${law.id}')" class="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-full border border-cream-300 bg-cream-50 hover:bg-cream-200 text-forest-900 text-xs font-semibold transition">
+                  <i data-lucide="download" class="w-4 h-4"></i> Download Text
+                </button>
+                <button onclick="toggleBookmarkLaw('${law.id}')" class="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-full border text-xs font-semibold transition ${isBookmarked ? 'border-copper-600 bg-copper-50 text-copper-700' : 'border-cream-300 text-slate-600 hover:text-forest-900'}">
+                  <i data-lucide="bookmark" class="w-3.5 h-3.5"></i> ${isBookmarked ? 'Saved' : 'Save Law'}
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function filterGazettes() {
+      const q = (document.getElementById('gazette-search')?.value || '').toLowerCase();
+      const cat = document.getElementById('gazette-cat-filter')?.value || 'ALL';
+      const yr = document.getElementById('gazette-year-filter')?.value || 'ALL';
+
+      const filtered = state.gazettes.filter(g => {
+        const matchQ = g.title.toLowerCase().includes(q) || g.fullCode.toLowerCase().includes(q) || g.summary.toLowerCase().includes(q);
+        const matchCat = cat === 'ALL' || g.category === cat;
+        const matchYr = yr === 'ALL' || g.year === yr;
+        return matchQ && matchCat && matchYr;
+      });
+
+      const container = document.getElementById('gazette-list');
+      if (container) {
+        container.innerHTML = renderGazetteCards(filtered);
+        lucide.createIcons();
+      }
+    }
+
+    function openGazetteReader(lawId) {
+      const law = state.gazettes.find(g => g.id === lawId);
+      if (!law) return;
+      openModal(`
+        <div class="bg-forest-900 text-cream-50 px-6 py-4 flex items-center justify-between">
+          <div>
+            <p class="font-code text-xs text-copper-400 font-bold">${law.number}</p>
+            <h3 class="font-editorial font-bold text-lg">${law.fullCode}</h3>
+          </div>
+          <button onclick="closeModal()" class="text-cream-300 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <div class="p-6 space-y-5 max-h-[75vh] overflow-y-auto">
+          <div>
+            <h4 class="font-editorial font-bold text-forest-900 text-xl">${law.title}</h4>
+            <p class="text-sm text-slate-600 mt-2 leading-relaxed">${law.summary}</p>
+          </div>
+
+          <!-- Academic Citation Box -->
+          <div class="p-4 rounded-xl bg-white border border-cream-300 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-code text-[11px] font-bold uppercase tracking-wider text-forest-900">Academic & Legal Citation</span>
+              <button onclick="copyCitationText('${law.citation.replace(/'/g, "\\'")}')" class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-forest-900 text-cream-50 font-code text-[11px] font-semibold">
+                <i data-lucide="copy" class="w-3 h-3 text-copper-400"></i> Copy Citation
+              </button>
+            </div>
+            <p class="font-code text-xs text-slate-700 bg-cream-100 p-3 rounded-lg border border-cream-300">${law.citation}</p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-copper-50 border border-copper-500/30">
+            <h5 class="font-code text-xs font-bold uppercase tracking-wider text-copper-700 mb-2">Key Statutory Provisions</h5>
+            <ul class="space-y-1.5 text-xs text-forest-900 list-disc pl-4">
+              ${law.keyArticles.map(art => `<li>${art}</li>`).join('')}
+            </ul>
+          </div>
+
+          <div>
+            <h5 class="font-code text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Official Gazette Excerpt</h5>
+            <pre class="p-4 rounded-xl bg-forest-950 text-cream-100 text-xs font-code whitespace-pre-wrap leading-relaxed">${law.fullText}</pre>
+          </div>
+
+          <div class="flex justify-end gap-3 pt-2 border-t border-cream-300">
+            <button onclick="closeModal()" class="px-4 py-2 rounded-full border border-cream-300 bg-white text-xs font-semibold">Close Reader</button>
+            <button onclick="downloadGazetteLaw('${law.id}')" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-copper-600 text-white text-xs font-semibold">
+              <i data-lucide="download" class="w-4 h-4"></i> Download Official Copy
+            </button>
+          </div>
+        </div>
+      `);
+    }
+
+    function copyCitationText(text) {
+      const el = document.createElement('textarea');
+      el.value = text;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      showToast('Statutory citation copied to clipboard.');
+    }
+
+    function downloadGazetteLaw(lawId) {
+      const law = state.gazettes.find(g => g.id === lawId);
+      const content = `${law.number}\n${law.fullCode}: ${law.title}\nCategory: ${law.category} | Status: ${law.status}\n============================================================\n\nCITATION:\n${law.citation}\n\nPLAIN LANGUAGE SUMMARY:\n${law.summary}\n\nKEY PROVISIONS:\n${law.keyArticles.map(a => '- ' + a).join('\n')}\n\nOFFICIAL TEXT:\n${law.fullText}`;
+      triggerTextDownload(`${law.lawCode.replace(/[^a-zA-Z0-9]/g, '_')}.txt`, content);
+    }
+
+    function toggleBookmarkLaw(lawId) {
+      const idx = state.bookmarkedLaws.indexOf(lawId);
+      if (idx === -1) {
+        state.bookmarkedLaws.push(lawId);
+        showToast('Legislation saved to My Portal.');
+      } else {
+        state.bookmarkedLaws.splice(idx, 1);
+        showToast('Removed from saved laws.', 'info');
+      }
+      saveState();
+      renderApp();
+    }
+
+    function triggerTextDownload(filename, text) {
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast(`Downloaded ${filename}`);
+    }
+
+    // -------------------------------------------------------------------------
+    // 10. INTERIOR PAGE 5: LEGAL EDUCATION
+    // -------------------------------------------------------------------------
+    function renderEducationPage() {
+      return `
+        <div class="page-reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          <div class="pb-6 border-b border-cream-300">
+            <span class="font-code text-xs font-bold uppercase tracking-widest text-copper-700">Civic Legal Literacy</span>
+            <h1 class="font-editorial font-bold text-3xl sm:text-4xl text-forest-900 mt-1">Know Your Rights & Rwandan Legal Procedures</h1>
+            <p class="text-sm text-slate-600 mt-1">Plain-language guides explaining how Rwandan laws protect citizens in daily life, property, work, and court.</p>
+          </div>
+
+          <!-- Interactive Legal Pathway -->
+          <div class="editorial-hero-bg text-cream-50 rounded-2xl p-6 sm:p-8 mt-6 shadow-md">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+              <div class="lg:col-span-5 space-y-2">
+                <span class="font-code text-xs font-bold uppercase tracking-widest text-copper-400">Interactive Legal Pathway</span>
+                <h2 class="font-editorial text-2xl font-bold">What Legal Situation Are You Facing?</h2>
+                <p class="text-xs sm:text-sm text-cream-200/80">Select a scenario below to view immediate statutory steps and the competent Rwandan institution.</p>
+              </div>
+              <div class="lg:col-span-7 space-y-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <button onclick="showScenarioGuidance('land')" class="p-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-left text-xs font-semibold flex items-center gap-2.5 transition">
+                    <i data-lucide="map" class="w-4 h-4 text-copper-400 shrink-0"></i> Land Boundary or Title Dispute
+                  </button>
+                  <button onclick="showScenarioGuidance('labor')" class="p-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-left text-xs font-semibold flex items-center gap-2.5 transition">
+                    <i data-lucide="briefcase" class="w-4 h-4 text-copper-400 shrink-0"></i> Unpaid Wages or Contract Termination
+                  </button>
+                  <button onclick="showScenarioGuidance('arrest')" class="p-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-left text-xs font-semibold flex items-center gap-2.5 transition">
+                    <i data-lucide="shield" class="w-4 h-4 text-copper-400 shrink-0"></i> Family Member Detained / Arrested
+                  </button>
+                  <button onclick="showScenarioGuidance('family')" class="p-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-left text-xs font-semibold flex items-center gap-2.5 transition">
+                    <i data-lucide="users" class="w-4 h-4 text-copper-400 shrink-0"></i> Inheritance or Matrimonial Property
+                  </button>
+                </div>
+                <div id="scenario-output" class="p-4 rounded-xl bg-forest-950/90 border border-copper-400/30 text-xs text-cream-100 leading-relaxed">
+                  <strong class="text-copper-400">Guidance:</strong> Click any scenario above to view your statutory rights, mandatory mediation rules, and relevant Rwandan law.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+            ${state.educationGuides.map(guide => `
+              <div class="bg-white rounded-2xl p-6 border border-cream-300 flex flex-col justify-between shadow-sm">
+                <div>
+                  <div class="flex items-center justify-between gap-2 mb-3">
+                    <span class="px-3 py-0.5 rounded-full bg-copper-50 text-copper-700 font-code text-xs font-bold border border-copper-500/20">${guide.category}</span>
+                    <span class="font-code text-xs text-slate-400">${guide.readTime}</span>
+                  </div>
+                  <h3 class="font-editorial font-bold text-xl text-forest-900">${guide.title}</h3>
+                  <p class="text-sm text-slate-600 mt-2 leading-relaxed">${guide.summary}</p>
+
+                  <div class="mt-4 space-y-2">
+                    <p class="font-code text-[11px] font-bold uppercase tracking-wider text-forest-900">Key Citizen Takeaways:</p>
+                    <ol class="space-y-2 text-xs text-slate-700 list-decimal pl-4">
+                      ${guide.steps.map(step => `<li class="leading-relaxed">${step}</li>`).join('')}
+                    </ol>
+                  </div>
+                </div>
+
+                <div class="mt-5 pt-4 border-t border-cream-200 flex flex-wrap items-center justify-between gap-2">
+                  <span class="font-code text-[11px] text-slate-500">Ref: ${guide.legalBasis}</span>
+                  <button onclick="navigateTo('lawyers')" class="text-xs font-bold text-copper-700 hover:text-forest-900 inline-flex items-center gap-1">
+                    Consult Specialist <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                  </button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function showScenarioGuidance(topic) {
+      const box = document.getElementById('scenario-output');
+      const guides = {
+        land: `<strong class="text-copper-400">Land Dispute Pathway (Law N° 27/2021):</strong> 1) Gather your UPI land title and witness statements. 2) For disputes below 3,000,000 RWF, file first with your Cell-level <em>Abunzi</em> (Mediators) Committee. 3) If unresolved, appeal within 30 days to the Primary Court via IECMS.`,
+        labor: `<strong class="text-copper-400">Labor Dispute Pathway (Law N° 66/2018):</strong> 1) Request written reasons for termination. 2) Submit a petition to the District Labour Inspector for mandatory amicable settlement. 3) If no settlement is reached, obtain the Inspector's minutes and file before the Intermediate Court.`,
+        arrest: `<strong class="text-copper-400">Arrest & Custody Safeguards (Constitution Art. 29):</strong> 1) RIB custody cannot exceed 5 days without prosecutorial review. 2) Immediately engage a verified Criminal Defense Advocate. 3) Indigent citizens can request free legal representation through MAJ or the Rwanda Bar Association Legal Aid Fund.`,
+        family: `<strong class="text-copper-400">Succession & Family Rights (Law N° 27/2016):</strong> 1) All children inherit equally regardless of gender. 2) Civil marriage regimes govern joint vs. separate assets. 3) Consult a Family Law Advocate before signing any estate partition agreement.`
+      };
+      if (box) box.innerHTML = guides[topic] || '';
+    }
+
+    // -------------------------------------------------------------------------
+    // 11. INTERIOR PAGE 6: COURT SCHEDULES & PUBLIC CONVICTION REGISTRY
+    // -------------------------------------------------------------------------
+    function renderCourtsPage() {
+      const isConvictions = state.courtsSubTab === 'convictions';
+
+      return `
+        <div class="page-reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-cream-300">
+            <div>
+              <span class="font-code text-xs font-bold uppercase tracking-widest text-copper-700">Judicial Transparency & Public Records</span>
+              <h1 class="font-editorial font-bold text-3xl sm:text-4xl text-forest-900 mt-1">Court Schedules & Public Conviction Registry</h1>
+              <p class="text-sm text-slate-600 mt-1">Verify public hearing schedules, courtroom venues, and legally publishable final conviction records.</p>
+            </div>
+
+            <div class="inline-flex p-1 rounded-full bg-cream-200 border border-cream-300 self-start">
+              <button onclick="switchCourtsTab('schedules')" class="px-4 py-2 rounded-full text-xs font-bold transition ${!isConvictions ? 'bg-forest-900 text-cream-50' : 'text-forest-900 hover:bg-cream-100'}">
+                Court Schedules
+              </button>
+              <button onclick="switchCourtsTab('convictions')" class="px-4 py-2 rounded-full text-xs font-bold transition ${isConvictions ? 'bg-forest-900 text-cream-50' : 'text-forest-900 hover:bg-cream-100'}">
+                Public Conviction Registry
+              </button>
+            </div>
+          </div>
+
+          ${!isConvictions ? `
+            <div class="mt-6 space-y-4">
+              <div class="bg-white rounded-2xl p-4 border border-cream-300 flex flex-col sm:flex-row gap-3">
+                <div class="relative flex-grow">
+                  <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3"></i>
+                  <input id="schedule-search" oninput="filterSchedules()" type="text" placeholder="Search by Case Number, Court, or Legal Provision..." class="w-full pl-10 pr-3 py-2 rounded-xl border border-cream-300 bg-cream-50 text-sm focus:outline-none focus:border-forest-900" />
+                </div>
+                <select id="schedule-court-filter" onchange="filterSchedules()" class="px-3.5 py-2 rounded-xl border border-cream-300 text-sm bg-cream-50 text-forest-900">
+                  <option value="ALL">All Courts</option>
+                  <option value="Supreme Court">Supreme Court</option>
+                  <option value="Commercial Court">Commercial Court</option>
+                  <option value="Intermediate Court">Intermediate Court</option>
+                  <option value="Primary Court">Primary Court</option>
+                </select>
+              </div>
+
+              <div class="bg-white rounded-2xl border border-cream-300 overflow-hidden shadow-sm">
+                <div class="overflow-x-auto">
+                  <table class="w-full text-left border-collapse">
+                    <thead>
+                      <tr class="bg-forest-900 text-cream-100 font-code text-xs uppercase tracking-wider">
+                        <th class="py-3.5 px-4">Case Number</th>
+                        <th class="py-3.5 px-4">Court & Venue</th>
+                        <th class="py-3.5 px-4">Matter & Legal Provision</th>
+                        <th class="py-3.5 px-4">Hearing Date & Time</th>
+                        <th class="py-3.5 px-4">Stage</th>
+                      </tr>
+                    </thead>
+                    <tbody id="schedules-tbody" class="divide-y divide-cream-200 text-sm">
+                      ${renderScheduleRows(state.courtSchedules)}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          ` : `
+            <div class="mt-6 space-y-5">
+              <div class="p-4 rounded-2xl bg-copper-50 border border-copper-500/30 text-xs text-forest-900 flex items-start gap-3">
+                <i data-lucide="scale" class="w-5 h-5 text-copper-700 shrink-0 mt-0.5"></i>
+                <div class="space-y-1">
+                  <p class="font-bold">Constitutional Safeguard: Presumption of Innocence & Law N° 058/2021 Compliance</p>
+                  <p class="leading-relaxed text-slate-700">
+                    This registry displays <strong>only final, confirmed criminal convictions</strong> where all appeal periods have expired or been exhausted. Ongoing investigations and unverified allegations are strictly excluded, and personal identifiers are redacted.
+                  </p>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-2xl p-4 border border-cream-300 flex flex-col sm:flex-row gap-3">
+                <div class="relative flex-grow">
+                  <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3"></i>
+                  <input id="conviction-search" oninput="filterConvictions()" type="text" placeholder="Search by Case Ref, Offence, or Law Article..." class="w-full pl-10 pr-3 py-2 rounded-xl border border-cream-300 bg-cream-50 text-sm focus:outline-none focus:border-forest-900" />
+                </div>
+                <select id="conviction-cat-filter" onchange="filterConvictions()" class="px-3.5 py-2 rounded-xl border border-cream-300 text-sm bg-cream-50 text-forest-900">
+                  <option value="ALL">All Offence Categories</option>
+                  <option value="Financial & Corruption">Financial & Corruption</option>
+                  <option value="Forgery & Cybercrime">Forgery & Cybercrime</option>
+                  <option value="Environmental Offences">Environmental Offences</option>
+                  <option value="Property & Fraud">Property & Fraud</option>
+                </select>
+              </div>
+
+              <div id="convictions-list" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                ${renderConvictionCards(state.convictions)}
+              </div>
+            </div>
+          `}
+        </div>
+      `;
+    }
+
+    function switchCourtsTab(tab) {
+      state.courtsSubTab = tab;
+      saveState();
+      renderApp();
+    }
+
+    function renderScheduleRows(list) {
+      if (list.length === 0) {
+        return `<tr><td colspan="5" class="py-8 text-center text-slate-500 text-sm">No matching court hearings found.</td></tr>`;
+      }
+      return list.map(row => `
+        <tr class="hover:bg-cream-100/70 transition">
+          <td class="py-3.5 px-4 font-code text-xs font-bold text-forest-900 whitespace-nowrap">${row.caseNumber}</td>
+          <td class="py-3.5 px-4">
+            <p class="font-semibold text-forest-900 text-xs">${row.court}</p>
+            <p class="text-xs text-slate-500">${row.venue}</p>
+          </td>
+          <td class="py-3.5 px-4">
+            <p class="font-medium text-forest-900 text-xs">${row.partiesPublic}</p>
+            <p class="font-code text-[11px] text-copper-700 font-semibold mt-0.5">${row.provision}</p>
+          </td>
+          <td class="py-3.5 px-4 font-code text-xs font-semibold text-slate-700 whitespace-nowrap">${row.hearingDate}</td>
+          <td class="py-3.5 px-4">
+            <span class="inline-flex items-center px-3 py-0.5 rounded-full font-code text-[11px] font-bold ${row.status === 'Live Now' ? 'bg-red-100 text-red-700' : 'bg-cream-200 text-forest-900'}">
+              ${row.stage}
+            </span>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function filterSchedules() {
+      const q = (document.getElementById('schedule-search')?.value || '').toLowerCase();
+      const court = document.getElementById('schedule-court-filter')?.value || 'ALL';
+      const filtered = state.courtSchedules.filter(s => {
+        const mQ = s.caseNumber.toLowerCase().includes(q) || s.court.toLowerCase().includes(q) || s.partiesPublic.toLowerCase().includes(q) || s.provision.toLowerCase().includes(q);
+        const mC = court === 'ALL' || s.court.includes(court);
+        return mQ && mC;
+      });
+      const tbody = document.getElementById('schedules-tbody');
+      if (tbody) tbody.innerHTML = renderScheduleRows(filtered);
+    }
+
+    function renderConvictionCards(list) {
+      if (list.length === 0) {
+        return `<div class="col-span-full bg-white rounded-2xl p-10 text-center border border-cream-300 text-slate-500 text-sm">No matching conviction records found.</div>`;
+      }
+      return list.map(c => `
+        <div class="bg-white rounded-2xl p-6 border border-cream-300 space-y-3 shadow-sm">
+          <div class="flex items-center justify-between gap-2">
+            <span class="px-3 py-0.5 rounded-full bg-forest-900 text-cream-50 font-code text-xs font-bold">${c.recordId}</span>
+            <span class="px-3 py-0.5 rounded-full bg-forest-100 text-forest-800 font-code text-[11px] font-bold">Confirmed Final Conviction</span>
+          </div>
+          <div>
+            <p class="font-code text-xs text-slate-500">${c.court} • Judgment Date: ${c.convictionDate}</p>
+            <h3 class="font-editorial font-bold text-lg text-forest-900 mt-1">${c.offence}</h3>
+          </div>
+          <div class="p-4 rounded-xl bg-cream-100 border border-cream-300 text-xs space-y-1.5">
+            <p><strong>Relevant Legal Provision:</strong> <span class="text-forest-900 font-semibold">${c.legalProvision}</span></p>
+            <p><strong>Sentence Imposed:</strong> ${c.sentence}</p>
+            <p><strong>Imprisonment Duration:</strong> <span class="font-bold text-red-700">${c.duration}</span></p>
+            <p class="text-slate-600 pt-1.5 border-t border-cream-300"><strong>Record Subject:</strong> ${c.subjectIdentifier}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterConvictions() {
+      const q = (document.getElementById('conviction-search')?.value || '').toLowerCase();
+      const cat = document.getElementById('conviction-cat-filter')?.value || 'ALL';
+      const filtered = state.convictions.filter(c => {
+        const mQ = c.offence.toLowerCase().includes(q) || c.legalProvision.toLowerCase().includes(q) || c.caseRef.toLowerCase().includes(q);
+        const mC = cat === 'ALL' || c.offenceCategory === cat;
+        return mQ && mC;
+      });
+      const container = document.getElementById('convictions-list');
+      if (container) container.innerHTML = renderConvictionCards(filtered);
+    }
+
+    // -------------------------------------------------------------------------
+    // 12. INTERIOR PAGE 7: TAILORED MY PORTAL (Customer / Lawyer / Scholar)
+    // -------------------------------------------------------------------------
+    function renderPortalPage() {
+      const user = state.currentUser;
+      const role = user.role;
+
+      return `
+        <div class="page-reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          <!-- Portal Header -->
+          <div class="editorial-hero-bg text-cream-50 rounded-2xl p-6 sm:p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6 shadow-md">
+            <div>
+              <span class="font-code text-xs font-bold uppercase tracking-widest text-copper-400">Tailored ${role.toUpperCase()} Workspace</span>
+              <h1 class="font-editorial text-2xl sm:text-3xl font-bold mt-1">
+                ${role === 'customer' ? 'My Legal Consultations, Profile & Saved Laws' : (role === 'lawyer' ? 'Advocate Chambers & Client Meeting Requests' : 'Scholar Research Notebook & Citations')}
+              </h1>
+              <p class="text-xs sm:text-sm text-cream-200/85 mt-1">
+                ${user.name} • ${user.email} • ${user.phone} • <strong>${user.location}</strong>
+              </p>
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+              <button onclick="switchPortalRole('customer')" class="px-4 py-2 rounded-full text-xs font-bold transition ${role === 'customer' ? 'bg-copper-600 text-white' : 'bg-white/10 text-cream-200 hover:bg-white/20'}">Customer View</button>
+              <button onclick="switchPortalRole('lawyer')" class="px-4 py-2 rounded-full text-xs font-bold transition ${role === 'lawyer' ? 'bg-copper-600 text-white' : 'bg-white/10 text-cream-200 hover:bg-white/20'}">Lawyer View</button>
+              <button onclick="switchPortalRole('scholar')" class="px-4 py-2 rounded-full text-xs font-bold transition ${role === 'scholar' ? 'bg-copper-600 text-white' : 'bg-white/10 text-cream-200 hover:bg-white/20'}">Scholar View</button>
+              <button onclick="signOutToGateway()" class="px-4 py-2 rounded-full text-xs font-semibold bg-forest-950 text-gold-400 border border-white/15">Sign Out</button>
+            </div>
+          </div>
+
+          <div class="mt-8">
+            ${role === 'customer' ? renderCustomerPortalBody() : (role === 'lawyer' ? renderLawyerPortalBody() : renderScholarPortalBody())}
+          </div>
+        </div>
+      `;
+    }
+
+    function switchPortalRole(newRole) {
+      state.currentUser.role = newRole;
+      state.authRole = newRole;
+      saveState();
+      renderApp();
+      showToast(`Switched portal view to ${newRole.toUpperCase()}.`, 'info');
+    }
+
+    function renderCustomerPortalBody() {
+      const user = state.currentUser;
+      const savedLaws = state.gazettes.filter(g => state.bookmarkedLaws.includes(g.id));
+
+      return `
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-4 space-y-6">
+            <div class="bg-white rounded-2xl p-6 border border-cream-300 space-y-4 shadow-sm">
+              <div class="flex items-center gap-3.5">
+                <div class="w-12 h-12 rounded-full bg-forest-900 text-gold-400 font-editorial font-bold text-xl flex items-center justify-center">
+                  ${user.name.slice(0, 2).toUpperCase()}
+                </div>
+                <div>
+                  <h3 class="font-editorial font-bold text-lg text-forest-900">${user.name}</h3>
+                  <p class="text-xs text-copper-700 font-semibold">Registered Customer</p>
+                </div>
+              </div>
+              <div class="text-xs text-slate-600 space-y-2 pt-3 border-t border-cream-200">
+                <p><strong>Email:</strong> ${user.email}</p>
+                <p><strong>Phone:</strong> ${user.phone}</p>
+                <p><strong>Where You Live:</strong> ${user.location}</p>
+                <p><strong>Focus Area:</strong> ${user.extraInfo || 'General Legal Assistance'}</p>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 border border-cream-300 shadow-sm">
+              <h3 class="font-editorial font-bold text-forest-900 text-lg mb-3">Saved Gazette Laws (${savedLaws.length})</h3>
+              ${savedLaws.length > 0 ? `
+                <div class="space-y-2.5">
+                  ${savedLaws.map(law => `
+                    <div class="p-3 rounded-xl bg-cream-100 border border-cream-300 flex items-center justify-between gap-2">
+                      <div>
+                        <p class="font-code text-xs font-bold text-forest-900">${law.lawCode}</p>
+                        <p class="text-[11px] text-slate-600 line-clamp-1">${law.title}</p>
+                      </div>
+                      <button onclick="openGazetteReader('${law.id}')" class="text-xs font-bold text-copper-700 hover:underline shrink-0">Read</button>
+                    </div>
+                  `).join('')}
+                </div>
+              ` : `<p class="text-xs text-slate-500">No saved laws yet.</p>`}
+            </div>
+          </div>
+
+          <div class="lg:col-span-8 space-y-6">
+            <div class="bg-white rounded-2xl p-6 border border-cream-300 shadow-sm">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-editorial font-bold text-xl text-forest-900">My Face-to-Face & Video Meetings (${state.appointments.length})</h3>
+                <button onclick="navigateTo('lawyers')" class="px-4 py-2 rounded-full bg-copper-600 text-white text-xs font-semibold hover:bg-forest-900 transition">+ Book Consultation</button>
+              </div>
+
+              ${state.appointments.length === 0 ? `
+                <p class="text-sm text-slate-500 py-6 text-center">No scheduled consultations yet.</p>
+              ` : `
+                <div class="space-y-3">
+                  ${state.appointments.map(apt => `
+                    <div class="p-4 rounded-xl border border-cream-300 bg-cream-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div class="space-y-1">
+                        <div class="flex flex-wrap items-center gap-2">
+                          <span class="font-code text-xs font-bold text-forest-900">${apt.id}</span>
+                          <span class="px-2.5 py-0.5 rounded-full font-code text-[11px] font-bold ${apt.status === 'Confirmed' ? 'bg-forest-100 text-forest-800' : (apt.status === 'Declined' ? 'bg-red-100 text-red-700' : 'bg-copper-100 text-copper-700')}">
+                            ${apt.status}
+                          </span>
+                        </div>
+                        <p class="font-bold text-sm text-forest-900">${apt.lawyerName} • <span class="text-copper-700">${apt.meetingType}</span></p>
+                        <p class="text-xs text-slate-600"><strong>Schedule:</strong> ${apt.date} at ${apt.timeSlot}</p>
+                        <p class="text-xs text-slate-500"><strong>Chambers:</strong> ${apt.officeAddress}</p>
+                      </div>
+                      <button onclick="cancelAppointment('${apt.id}')" class="px-3.5 py-1.5 rounded-full border border-red-200 bg-white hover:bg-red-50 text-red-700 text-xs font-semibold self-start">
+                        Cancel
+                      </button>
+                    </div>
+                  `).join('')}
+                </div>
+              `}
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 border border-cream-300 shadow-sm">
+              <h3 class="font-editorial font-bold text-xl text-forest-900 mb-3">Direct Messages</h3>
+              <div class="space-y-3">
+                ${state.messages.map(m => `
+                  <div class="p-4 rounded-xl bg-cream-100 border border-cream-300">
+                    <div class="flex items-center justify-between text-xs mb-1">
+                      <span class="font-bold text-forest-900">From: ${m.from} → To: ${m.to}</span>
+                      <span class="font-code text-[11px] text-slate-400">${m.timestamp}</span>
+                    </div>
+                    <p class="text-xs font-semibold text-copper-700">${m.subject}</p>
+                    <p class="text-xs text-slate-700 mt-1.5 leading-relaxed">${m.body}</p>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function cancelAppointment(aptId) {
+      state.appointments = state.appointments.filter(a => a.id !== aptId);
+      saveState();
+      renderApp();
+      showToast(`Appointment ${aptId} cancelled.`, 'info');
+    }
+
+    function renderLawyerPortalBody() {
+      const activeLawyer = state.lawyers.find(l => l.id === state.selectedLawyerIdForDashboard) || state.lawyers[0];
+      const lawyerAppointments = state.appointments.filter(a => a.lawyerId === activeLawyer.id || state.selectedLawyerIdForDashboard === 'ALL');
+
+      return `
+        <div class="space-y-6">
+          <div class="bg-white rounded-2xl p-5 border border-cream-300 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
+            <div>
+              <p class="font-code text-xs font-bold uppercase text-copper-700">Managing Chambers As:</p>
+              <h3 class="font-editorial font-bold text-xl text-forest-900">${activeLawyer.name} (${activeLawyer.rbaNumber})</h3>
+              <p class="text-xs text-slate-500">${activeLawyer.officeAddress}</p>
+            </div>
+            <select onchange="selectDashboardLawyer(this.value)" class="px-4 py-2.5 rounded-full border border-cream-300 text-xs font-semibold bg-cream-50 text-forest-900">
+              ${state.lawyers.map(l => `<option value="${l.id}" ${l.id === activeLawyer.id ? 'selected' : ''}>${l.name}</option>`).join('')}
+              <option value="ALL" ${state.selectedLawyerIdForDashboard === 'ALL' ? 'selected' : ''}>All Advocates' Requests</option>
+            </select>
+          </div>
+
+          <div class="bg-white rounded-2xl p-6 border border-cream-300 shadow-sm">
+            <h3 class="font-editorial font-bold text-xl text-forest-900 mb-4">Incoming Face-to-Face & Video Consultation Requests (${lawyerAppointments.length})</h3>
+            ${lawyerAppointments.length === 0 ? `
+              <p class="text-sm text-slate-500 py-6 text-center">No appointment requests for this advocate yet.</p>
+            ` : `
+              <div class="space-y-3">
+                ${lawyerAppointments.map(apt => `
+                  <div class="p-4 rounded-xl border border-cream-300 bg-cream-50 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="space-y-1">
+                      <div class="flex flex-wrap items-center gap-2">
+                        <span class="font-code text-xs font-bold text-forest-900">${apt.id}</span>
+                        <span class="px-2.5 py-0.5 rounded-full font-code text-[11px] font-bold ${apt.status === 'Confirmed' ? 'bg-forest-100 text-forest-800' : (apt.status === 'Declined' ? 'bg-red-100 text-red-700' : 'bg-copper-100 text-copper-700')}">
+                          ${apt.status}
+                        </span>
+                        <span class="text-xs font-semibold text-forest-800">• ${apt.meetingType}</span>
+                      </div>
+                      <p class="font-bold text-sm text-forest-900">Client: ${apt.clientName} (${apt.clientPhone})</p>
+                      <p class="text-xs text-slate-600"><strong>Requested Slot:</strong> ${apt.date} at ${apt.timeSlot}</p>
+                      <p class="text-xs text-slate-700 mt-1"><strong>Client Brief:</strong> ${apt.topic}</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2 shrink-0">
+                      <button onclick="updateAppointmentStatus('${apt.id}', 'Confirmed')" class="px-4 py-2 rounded-full bg-forest-800 hover:bg-forest-900 text-white text-xs font-semibold transition">
+                        ✓ Accept Meeting
+                      </button>
+                      <button onclick="updateAppointmentStatus('${apt.id}', 'Declined')" class="px-4 py-2 rounded-full border border-red-300 bg-white hover:bg-red-50 text-red-700 text-xs font-semibold transition">
+                        Decline
+                      </button>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            `}
+          </div>
+        </div>
+      `;
+    }
+
+    function selectDashboardLawyer(id) {
+      state.selectedLawyerIdForDashboard = id;
+      saveState();
+      renderApp();
+    }
+
+    function updateAppointmentStatus(aptId, newStatus) {
+      const apt = state.appointments.find(a => a.id === aptId);
+      if (!apt) return;
+      apt.status = newStatus;
+      pushNotification(
+        `Consultation ${newStatus}`,
+        `${apt.lawyerName} has ${newStatus.toLowerCase()} appointment ${apt.id} (${apt.date} at ${apt.timeSlot}).`
+      );
+      saveState();
+      renderApp();
+      showToast(`Appointment ${apt.id} marked as ${newStatus}.`);
+    }
+
+    function renderScholarPortalBody() {
+      const user = state.currentUser;
+      const savedLaws = state.gazettes.filter(g => state.bookmarkedLaws.includes(g.id));
+
+      return `
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-4 space-y-6">
+            <div class="bg-white rounded-2xl p-6 border border-cream-300 space-y-4 shadow-sm">
+              <div class="flex items-center gap-3.5">
+                <div class="w-12 h-12 rounded-full bg-forest-900 text-gold-400 flex items-center justify-center">
+                  <i data-lucide="graduation-cap" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <h3 class="font-editorial font-bold text-lg text-forest-900">${user.name}</h3>
+                  <p class="text-xs text-copper-700 font-semibold">Legal Scholar & Researcher</p>
+                </div>
+              </div>
+              <div class="text-xs text-slate-600 space-y-2 pt-3 border-t border-cream-200">
+                <p><strong>Email:</strong> ${user.email}</p>
+                <p><strong>Location:</strong> ${user.location}</p>
+                <p><strong>Institution / Focus:</strong> ${user.extraInfo || 'University of Rwanda – School of Law'}</p>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 border border-cream-300 shadow-sm">
+              <h3 class="font-editorial font-bold text-lg text-forest-900 mb-3">Add Research Note</h3>
+              <form onsubmit="addScholarNote(event)" class="space-y-3">
+                <input id="res-title" type="text" required placeholder="Note Title (e.g., Land Title Transfer Jurisprudence)" class="w-full px-3.5 py-2 rounded-xl border border-cream-300 bg-cream-50 text-xs" />
+                <input id="res-law" type="text" required placeholder="Cited Statute / Case (e.g., Law N° 27/2021)" class="w-full px-3.5 py-2 rounded-xl border border-cream-300 bg-cream-50 font-code text-xs" />
+                <textarea id="res-body" rows="3" required placeholder="Write analytical observations..." class="w-full px-3.5 py-2 rounded-xl border border-cream-300 bg-cream-50 text-xs"></textarea>
+                <button type="submit" class="w-full py-2.5 rounded-full bg-copper-600 hover:bg-forest-900 text-white text-xs font-bold transition">
+                  Save Research Note
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <div class="lg:col-span-8 space-y-6">
+            <div class="bg-white rounded-2xl p-6 border border-cream-300 shadow-sm">
+              <h3 class="font-editorial font-bold text-xl text-forest-900 mb-4">Jurisprudential Research Notebook (${state.researchNotes.length})</h3>
+              <div class="space-y-3">
+                ${state.researchNotes.map(note => `
+                  <div class="p-4 rounded-xl bg-cream-50 border border-cream-300 space-y-1.5">
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="font-code text-[11px] font-bold text-copper-700">${note.lawRef}</span>
+                      <span class="font-code text-[10px] text-slate-400">${note.updatedAt}</span>
+                    </div>
+                    <h4 class="font-editorial font-bold text-base text-forest-900">${note.title}</h4>
+                    <p class="text-xs text-slate-700 leading-relaxed">${note.note}</p>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 border border-cream-300 shadow-sm">
+              <h3 class="font-editorial font-bold text-xl text-forest-900 mb-3">Saved Statutes & Formal Citations</h3>
+              <div class="space-y-3">
+                ${savedLaws.map(law => `
+                  <div class="p-4 rounded-xl bg-cream-100 border border-cream-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                      <p class="font-code text-xs font-bold text-forest-900">${law.fullCode}</p>
+                      <p class="text-xs text-slate-600 mt-0.5">${law.citation}</p>
+                    </div>
+                    <button onclick="copyCitationText('${law.citation.replace(/'/g, "\\'")}')" class="px-4 py-1.5 rounded-full bg-forest-900 text-cream-50 font-code text-[11px] font-semibold shrink-0">
+                      Copy Citation
+                    </button>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function addScholarNote(e) {
+      e.preventDefault();
+      state.researchNotes.unshift({
+        id: 'RES-' + Date.now(),
+        title: document.getElementById('res-title').value.trim(),
+        lawRef: document.getElementById('res-law').value.trim(),
+        note: document.getElementById('res-body').value.trim(),
+        updatedAt: 'Nov 15, 2026'
+      });
+      saveState();
+      renderApp();
+      showToast('Research note saved.');
+    }
+
+    function openQuickSearchModal() {
+      openModal(`
+        <div class="bg-forest-900 text-cream-50 px-6 py-4 flex items-center justify-between">
+          <h3 class="font-editorial font-bold text-base">Quick Search Across VERIDEX</h3>
+          <button onclick="closeModal()" class="text-cream-300 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <div class="p-6 space-y-4">
+          <p class="text-xs text-slate-600">Jump directly to verified advocates, Official Gazette laws, or court schedules:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+            <button onclick="closeModal(); navigateTo('lawyers')" class="p-3 rounded-xl bg-white border border-cream-300 hover:border-copper-600 text-xs font-bold text-forest-900">Advocates Directory</button>
+            <button onclick="closeModal(); navigateTo('gazette')" class="p-3 rounded-xl bg-white border border-cream-300 hover:border-copper-600 text-xs font-bold text-forest-900">Official Gazette</button>
+            <button onclick="closeModal(); navigateTo('courts')" class="p-3 rounded-xl bg-white border border-cream-300 hover:border-copper-600 text-xs font-bold text-forest-900">Court Schedules</button>
+          </div>
+        </div>
+      `);
+    }
+
+    // -------------------------------------------------------------------------
+    // 13. MAIN RENDER CONTROLLER
+    // -------------------------------------------------------------------------
+    function renderApp() {
+      const shell = document.getElementById('app-shell');
+      if (!shell) return;
+
+      if (!state.isAuthenticated) {
+        shell.innerHTML = renderAuthGateway();
+      } else {
+        shell.innerHTML = renderInteriorShell();
+      }
+
+      lucide.createIcons();
+    }
+
+    document.addEventListener('click', (e) => {
+      const dd = document.getElementById('notif-dropdown');
+      if (dd && !dd.classList.contains('hidden')) {
+        if (!e.target.closest('#notif-dropdown') && !e.target.closest('button[aria-label="Notifications"]')) {
+          dd.classList.add('hidden');
+        }
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderApp();
+    });
+  </script>
+</body>
+</html>
